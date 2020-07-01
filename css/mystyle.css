@@ -1,0 +1,36 @@
+/** start of  smaller screen*/
+@media only screen and (max-width: 690px) {
+  .header-logo {
+    font-weight: bold;
+    font-size: 22px;
+  }
+
+  .site-logo {
+    padding: 20px;
+  }
+
+  .slicknav_btn {
+    position: relative;
+    top: 0px;
+  }
+}
+
+/** end of smaller screen **/
+
+/** start of bigger screen*/
+@media only screen and (min-width: 690px) {
+  .header-logo {
+    font-weight: bold;
+    font-size: 23px;
+  }
+}
+
+/** end of bigger screen **/
+
+.w {
+  color: white;
+}
+
+.r {
+  color: #fc0254;
+}
