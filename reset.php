@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'classes/database.class.php';
 include 'classes/users.class.php';
 include 'classes/typing_contest.class.php';
@@ -12,6 +13,8 @@ if ($result) {
     echo "Error";
 }
 */
+
+//echo $_SESSION['contest_sentence_count_5efcf620dd870'];
 
 $typing_contest = new Typing_contest();
 /*$result = $typing_contest->createContest("Silver");
@@ -61,10 +64,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 //$user->setUserDetail("5ef9e0bba9cbe", "name", "Emmanuel Danjumbo");
 //echo $user->getUserDetail("5ef9e0bba9cbe", "name");
 //$user->removeUserWithdrawableBalance("5ef9e0bba9cbe", "1000");
-//$typing_contest->addParticipant("5efb05dba1eb5", "5efa668ebd5c6");
+//$typing_contest->addParticipant("5efb042366d4e", "5ef9e0bba9cb");
 //$user->createUser("Mary Jones", "mary@gmail.com", "09012781267", "1234");
 
-$typing_contest->setContestDetail("5efb05dba1eb5", "full", "yes");
+//$typing_contest->setContestDetail("5efb042366d4e", "status", "Ended");
 
 /*
 $contest_array = [];

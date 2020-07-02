@@ -75,11 +75,11 @@ class Typing_contest
         return;
     }
 
-    public function getAllContests()
+    public function getAllContests($contest_category)
     {
         global $db;
 
-        $result = $db->setQuery("SELECT * FROM typing_contest ORDER BY id DESC;");
+        $result = $db->setQuery("SELECT * FROM typing_contest WHERE contest_category='$contest_category' ORDER BY id DESC;");
         return $result;
     }
 
@@ -105,6 +105,14 @@ class Typing_contest
         }
     }
 
+
+    public function deleteContest($contest_id)
+    {
+        global $db;
+
+        $result = $db->setQuery("DELETE FROM typing_contest WHERE uniqueid='$contest_id';");
+        return $result;
+    }
 
 
     public function getContestNumParticipants($contest_id)
@@ -158,13 +166,7 @@ class Typing_contest
     }
 
 
-    public function deleteContest($contest_id)
-    {
-        global $db;
 
-        $result = $db->setQuery("DELETE FROM typing_contest WHERE uniqueid='$contest_id';");
-        return $result;
-    }
 
 
 

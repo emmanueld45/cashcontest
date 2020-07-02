@@ -34,34 +34,15 @@ include '../../classes/users.class.php';
     <link rel="stylesheet" href="../../css/slicknav.min.css" />
 
     <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/mystyle.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/mystyle.css" />
 
 
 </head>
 
 <body>
 
-    <?php
-    $typing_contest = new Typing_contest();
-    $result = $typing_contest->getAllContests();
-
-    while ($row = mysqli_fetch_assoc($result)) {
-
-    ?>
-
-        <div class="box">
-            <h3><?php echo $row['contest_id']; ?></h3>
-            <button class="btn btn-success join-btn<?php echo $row['uniqueid']; ?>" style="display:;">Join</button>
-            <button class="btn btn-danger ended-btn<?php echo $row['uniqueid']; ?>" style="display:none;">Ended</button>
-            <button class="btn btn-info full-btn<?php echo $row['uniqueid']; ?>" style="display:none;">Full</button>
-            <button class="btn btn-primary participants<?php echo $row['uniqueid']; ?>">Particiants <span class="participants-text<?php echo $row['uniqueid']; ?>"><?php echo $typing_contest->getContestNumParticipants($row['uniqueid']); ?></span></button>
-            <button class="btn contest-time-btn<?php echo $row['uniqueid']; ?>">starts in <span class="contest-time-text<?php echo $row['uniqueid']; ?>"><?php echo $typing_contest->getContestDetail($row['uniqueid'], 'contest_time'); ?></span>seconds</button>
-        </div>
-
-    <?php
-    }
-    ?>
+    <div class="contests-container"></div>
 
 
     <div class="display"></div>
@@ -75,8 +56,9 @@ include '../../classes/users.class.php';
     <script src="../../js/main.js"></script>
     <script src="../../js/mymain.js"></script>
 
+
     <script>
-        var contest_id;
+        /*  var contest_id;
         var status;
         var num_participants;
         var contest_time;
@@ -134,6 +116,29 @@ include '../../classes/users.class.php';
                             $(".contest-time-text" + contest_id).html(contest_time);
                         }
                     }
+
+                }
+
+            });
+
+        }, 1000);  */
+        var get_contests = "yes";
+        var contest_category = "Silver";
+        setInterval(() => {
+
+
+            $.ajax({
+
+                url: "ajax-get-contests.php",
+                method: "POST",
+                async: false,
+                data: {
+                    "get_contests": get_contests,
+                    "contest_category": contest_category
+                },
+                success: function(data) {
+                    $(".contests-container").html(data);
+
 
                 }
 
