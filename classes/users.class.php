@@ -10,15 +10,16 @@ class User
         $uniqueid = uniqid();
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $image = "userimages/default-image.jpeg";
-        $playing_balance = 0;
+        $coins = 50;
         $withdrawable_balance = 0;
         $status = "active";
         $time = time();
         $date = date("d-m-y");
         $new = "yes";
-        $total_withdrawan = 0;
+        $total_received = 0;
+        $airtime_balance = 0;
 
-        $result = $db->setQuery("INSERT INTO users (uniqueid, name, phone, email, password, image, playing_balance, withdrawable_balance, status, time, date, new, total_withdrawn) VALUES ('$uniqueid', '$name', '$phone', '$email', '$hashed', '$image', '$playing_balance', '$withdrawable_balance', '$status', '$time', '$date', '$new', '$total_withdrawan');");
+        $result = $db->setQuery("INSERT INTO users (uniqueid, name, phone, email, password, image, coins, withdrawable_balance, status, time, date, new, total_received, airtime_balance) VALUES ('$uniqueid', '$name', '$phone', '$email', '$hashed', '$image', '$coins', '$withdrawable_balance', '$status', '$time', '$date', '$new', '$total_received', '$airtime_balance');");
         return $result;
     }
 
@@ -47,75 +48,22 @@ class User
         }
     }
 
-    public function addUserPlayingBalance($user_id, $amount)
+
+    public function updateUserDetail($userid, $detail, $value, $op)
     {
         global $db;
 
-        $result = $db->setQuery("SELECT * FROM users WHERE uniqueid='$user_id';");
+        $result = $db->setQuery("SELECT * FROM users WHERE uniqueid='$userid';");
         $row = mysqli_fetch_assoc($result);
-        $playing_balance = $row['playing_balance'];
-        $playing_balance = $playing_balance + $amount;
+        $old_value = $row[$detail];
 
-        $result = $db->setQuery("UPDATE users SET playing_balance=$playing_balance WHERE uniqueid='$user_id';");
-        if ($result) {
-            return true;
-        } else {
-            return false;
+        if ($op == "+") {
+            $new_value = $old_value + $value;
+        } else if ($op == "-") {
+            $new_value = $old_value - $value;
         }
-    }
 
-
-    public function removeUserPlayingBalance($user_id, $amount)
-    {
-        global $db;
-
-        $result = $db->setQuery("SELECT * FROM users WHERE uniqueid='$user_id';");
-        $row = mysqli_fetch_assoc($result);
-        $playing_balance = $row['playing_balance'];
-        $playing_balance = $playing_balance - $amount;
-
-        $result = $db->setQuery("UPDATE users SET playing_balance=$playing_balance WHERE uniqueid='$user_id';");
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-
-
-
-
-
-    public function addUserWithdrawableBalance($user_id, $amount)
-    {
-        global $db;
-
-        $result = $db->setQuery("SELECT * FROM users WHERE uniqueid='$user_id';");
-        $row = mysqli_fetch_assoc($result);
-        $withdrawable_balance = $row['withdrawable_balance'];
-        $withdrawable_balance = $withdrawable_balance + $amount;
-
-        $result = $db->setQuery("UPDATE users SET withdrawable_balance=$withdrawable_balance WHERE uniqueid='$user_id';");
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public function removeUserWithdrawableBalance($user_id, $amount)
-    {
-        global $db;
-
-        $result = $db->setQuery("SELECT * FROM users WHERE uniqueid='$user_id';");
-        $row = mysqli_fetch_assoc($result);
-        $withdrawable_balance = $row['withdrawable_balance'];
-        $withdrawable_balance = $withdrawable_balance - $amount;
-
-        $result = $db->setQuery("UPDATE users SET withdrawable_balance=$withdrawable_balance WHERE uniqueid='$user_id';");
+        $result1 = $db->setQuery("UPDATE users SET $detail='$new_value' WHERE uniqueid='$userid';");
         if ($result) {
             return true;
         } else {

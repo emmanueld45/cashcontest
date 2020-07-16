@@ -55,9 +55,12 @@ include '../../classes/users.class.php';
     <script src="../../js/mixitup.min.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../js/mymain.js"></script>
+    <script src="js/format.time.js"></script>
 
 
     <script>
+        //  var time = format_time(500);
+        // document.querySelector(".display").innerHTML = "Minutes:" + time.minutes + ", seconds:" + time.seconds;
         /*  var contest_id;
         var status;
         var num_participants;

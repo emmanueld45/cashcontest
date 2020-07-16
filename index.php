@@ -40,7 +40,7 @@
     <!-- header section end -->
 
 
-    <!-- Hero section -->
+    <!-- Hero section --
     <section class="hero-section">
         <div class="hero-slider owl-carousel">
             <div class="hs-item">
@@ -85,18 +85,29 @@
     </section>
     <!-- Hero section end -->
 
+
+    <!--== FRONT PAGE BANNER START ===--->
+    <div class="frontpage-banner-container">
+        <img src="contestimages/gameimg5.jpg" class="frontpage-banner-img">
+    </div>
+    <!--== FRONT PAGE BANNER START ===--->
+
+
+
+    <div style="margin-top:-70px !important;"></div>
+
     <!-- Intro section -->
     <section class="intro-section spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-title">
-                        <h2>Unlimited Access to 100K tracks</h2>
+                        <h2>Cash out weekly playing simple games! <i class="fa fa-gamepad" style="color:orange;"></i></h2>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
-                    <a href="#" class="site-btn">Try it now</a>
+                    <a href="#" class="site-btn">Start now!</a>
                 </div>
             </div>
         </div>
@@ -124,7 +135,7 @@
                         <div class="hi-icon">
                             <img src="img/icons/pointer.png" alt="">
                         </div>
-                        <h4>Choose a plan</h4>
+                        <h4>Join a contest</h4>
                         <p>Donec in sodales dui, a blandit nunc. Pellen-tesque id eros venenatis, sollicitudin neque sodales, vehicula nibh. Nam massa odio, portti-tor vitae efficitur non. </p>
                     </div>
                 </div>
@@ -133,7 +144,7 @@
                         <div class="hi-icon">
                             <img src="img/icons/smartphone.png" alt="">
                         </div>
-                        <h4>Download Music</h4>
+                        <h4>Win & Cashout</h4>
                         <p>Ablandit nunc. Pellentesque id eros venenatis, sollicitudin neque sodales, vehicula nibh. Nam massa odio, porttitor vitae efficitur non, ultric-ies volutpat tellus. </p>
                     </div>
                 </div>
@@ -259,6 +270,13 @@
     </section>
     <!-- Premium section end -->
 
+
+    <!--=== intro modal start ==---
+    <div class="intro-modal-background">
+        <div class="intro-modal"></div>
+    </div>
+    <!--=== intro modal end ==--->
+
     <!-- footer section start -->
     <?php include 'footer.php'; ?>
     <!-- footer section end -->
@@ -272,6 +290,9 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/mymain.js"></script>
+
+
+    <script id="provello_script" src="http://provello.ngoffer.com.ng/provello.js?provello_key=123456789"></script>
 
 </body>
 
