@@ -52,11 +52,10 @@ class CountUpTimer {
   seconds;
   count_up_interval;
 
-  constructor() {
-    this.seconds = 0;
-  }
+  
 
-  start() {
+  start(secs) {
+    this.seconds = secs;
     this.count_up_interval = setInterval(() => {
       this.seconds++;
     }, 1000);

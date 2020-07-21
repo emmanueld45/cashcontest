@@ -1,7 +1,7 @@
 <?php
 class Activity
 {
-    public function createAtivity($type, $data)
+    public function createAtivity($userid, $type, $sub_type, $data)
     {
         global $db;
 
@@ -9,7 +9,8 @@ class Activity
         $date = date("d-m-y");
         $status = 0;
 
-        $result = $db->setQuery("INSERT INTO activities (type, time, date, status, data) VALUES ('$type', '$time', '$date', '$status', '$data');");
+
+        $result = $db->setQuery("INSERT INTO activities (userid, type, sub_type, time, date, status, data) VALUES ('$userid', '$type', '$sub_type', '$time', '$date', '$status', '$data');");
         if ($result) {
             return true;
         } else {
@@ -34,6 +35,41 @@ class Activity
         global $db;
 
         $result = $db->setQuery("UPDATE activities SET $detail='$value' WHERE id='$activity_id';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function addToWinnerHistory($winner_id, $amount, $history_type)
+    {
+        global $db;
+
+        $time = time();
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO winners_history (winner_id, amount, history_type, time, date) VALUES ('$winner_id', '$amount', '$history_type', '$time', '$date');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    public function sendChallengeRequest($challenge_type, $challenge_id, $sender_id, $receiver_id)
+    {
+
+        global $db;
+
+        $time = time();
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO challenge_requests (challenge_type, challenge_id, sender_id, receiver_id, time, date) VALUES ('$challenge_type', '$challenge_id', '$sender_id', '$receiver_id', '$time', '$date');");
         if ($result) {
             return true;
         } else {

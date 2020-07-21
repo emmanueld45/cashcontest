@@ -111,7 +111,7 @@
                 <a href="topup.php">
                     <div class="body-nav-item" style="color:mediumseagreen;"><i class="fa fa-star"></i> Challenges <button class="btn btn-success fr" style="padding:5px;font-size:14px;">Create +</button></div>
                 </a>
-                <a href="topup.php">
+                <a href="winwheel">
                     <div class="body-nav-item" style="color:crimson;"><i class="fa fa-flag"></i> Free airtime: <span>&#8358</span>50 <button class="btn btn-danger fr" style="padding:5px;font-size:14px;background-color:crimson;">Spin & Win</button></div>
                 </a>
 

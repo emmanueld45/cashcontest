@@ -10,7 +10,8 @@ class MemoryContest
     public $gold_coin_price = 100;
     public $diamond_coin_price = 200;
 
-    public $max_participants = 1;
+    public $max_participants = 5;
+    public $min_participants = 1;
 
     public function createContest($contest_category)
     {
@@ -22,12 +23,12 @@ class MemoryContest
         $time = time();
         $date = date("d-m-y");
         $this->start_time = time();
-        $this->end_time = 300;
-        $is_full = "no";
+        $this->end_time = 60;
+
         $have_results = "no";
         $status = "Running";
 
-        $result = $db->setQuery("INSERT INTO memory_contest (contest_id, image, contest_category, time, date, status, start_time, end_time, is_full, have_results) VALUES ('$contest_id', '$image', '$contest_category', '$time', '$date', '$status', '$this->start_time', '$this->end_time', '$is_full', '$have_results');");
+        $result = $db->setQuery("INSERT INTO memory_contest (contest_id, image, contest_category, time, date, status, start_time, end_time, have_results) VALUES ('$contest_id', '$image', '$contest_category', '$time', '$date', '$status', '$this->start_time', '$this->end_time', '$have_results');");
     }
 
 
@@ -54,6 +55,29 @@ class MemoryContest
     }
 
 
+    public function updateDetail($contest_id, $detail, $value, $op)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_contest WHERE contest_id='$contest_id';");
+        $row = mysqli_fetch_assoc($result);
+        $old_value = $row[$detail];
+
+        if ($op == "+") {
+            $new_value = $old_value + $value;
+        } else if ($op == "-") {
+            $new_value = $old_value - $value;
+        }
+
+        $result1 = $db->setQuery("UPDATE memory_contest SET $detail='$new_value' WHERE contest_id='$contest_id';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function addParticipant($contest_id, $userid)
     {
         global $db;
@@ -61,8 +85,33 @@ class MemoryContest
         $finish_time = 0;
         $finish_status = "pending";
         $amount_won = 0;
+        $won = "no";
 
-        $result = $db->setQuery("INSERT INTO memory_contest_participants (contest_id, userid, finish_time, finish_status, amount_won) VALUES ('$contest_id', '$userid', '$finish_time', '$finish_status', '$amount_won');");
+        $result = $db->setQuery("INSERT INTO memory_contest_participants (contest_id, userid, finish_time, finish_status, amount_won, won) VALUES ('$contest_id', '$userid', '$finish_time', '$finish_status', '$amount_won', '$won');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getParticipantDetail($contest_id, $userid, $detail)
+    {
+        global $db;
+        $result = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id' AND userid='$userid';");
+        $row = mysqli_fetch_assoc($result);
+        $received_detail = $row[$detail];
+
+        return $received_detail;
+    }
+
+
+    public function setParticipantDetail($contest_id, $userid, $detail, $value)
+    {
+        global $db;
+
+        $result = $db->setQuery("UPDATE memory_contest_participants SET $detail='$value' WHERE contest_id='$contest_id' AND userid='$userid';");
         if ($result) {
             return true;
         } else {
@@ -140,4 +189,435 @@ class MemoryContest
             return false;
         }
     }
+
+
+    public function checkResults()
+    {
+        global $db;
+        $user = new User();
+        $admin = new Admin();
+
+        $result = $db->setQuery("SELECT * FROM memory_contest WHERE have_results='no';");
+        while ($row = mysqli_fetch_assoc($result)) {
+            $contest_id = $row['contest_id'];
+            $finish_time_array = [];
+
+            $result1 = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id' AND finish_status='played';");
+
+            while ($row1 = mysqli_fetch_assoc($result1)) {
+                $finish_time_array[count($finish_time_array)] = $row1['finish_time'];
+            }
+
+            sort($finish_time_array);
+
+            $winner_finish_time = $finish_time_array[0];
+
+            // checking for tiles/draws
+            $finish_time_array[0] = "123456789";
+            $x = 0;
+            foreach ($finish_time_array as $finish_time_single) {
+                if ($finish_time_single == $winner_finish_time) {
+                    $x++;
+                }
+            }
+
+            // evaluate the prices of the winner/winners and also the admin price
+            $coin_price = $this->getContestCoinPrice($contest_id);
+            $num_participants = $this->getNumParticipants($contest_id);
+            $winner_price = $coin_price * $num_participants;
+
+            $admin_price = $winner_price * 0.2;
+            $winner_price = $winner_price - $admin_price;
+
+            $admin->updateAdminDetail("main_balance", $admin_price, "+");
+            $this->setDetail($contest_id, "have_results", "yes");
+
+
+
+            // check if num participants is equal or greater than the min allowable participants
+            if ($num_participants >= $this->min_participants) {
+
+                // check if no tile/draw
+                if ($x == 0) {
+                    $result2 = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id' AND finish_time = '$winner_finish_time' AND finish_status='played';");
+                    $row2 = mysqli_fetch_assoc($result2);
+                    $winner_id = $row2['userid'];
+
+
+                    $user->updateUserDetail($winner_id, "withdrawable_balance", $winner_price, "+");
+                    $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $winner_price);
+                    $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                } else {
+
+                    if ($x + 1 == $num_participants) {
+                        $correct_winner_price = ($winner_price + $admin_price) / ($x + 1);
+                        $admin->updateAdminDetail("main_balance", $admin_price, "-");
+                    } else {
+                        $correct_winner_price = round($winner_price / ($x + 1));
+                    }
+
+                    $result2 = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id' AND finish_time = '$winner_finish_time' AND finish_status='played';");
+                    while ($row2 = mysqli_fetch_assoc($result2)) {
+                        $winner_id = $row2['userid'];
+                        $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                        $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
+                        $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                    }
+                }
+            } else {
+                // refund players money
+                $correct_winner_price = ($winner_price + $admin_price) / $num_participants;
+                $admin->updateAdminDetail("main_balance", $admin_price, "-");
+                $result2 = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id';");
+                while ($row2 = mysqli_fetch_assoc($result2)) {
+                    $winner_id = $row2['userid'];
+                    $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                    $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
+                    $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**** CHALLENGE METHODS START *** */
+
+    public function createChallenge($creator_id, $coin_price, $challenge_min_participants, $challenge_max_participants, $accessibility)
+    {
+        global $db;
+
+        $challenge_id = uniqid();
+        $time = time();
+        $date = date("d-m-y");
+        $start_time = time();
+        $end_time = 300;
+        $status = "Running";
+        $have_results = "no";
+
+        $result =  $db->setQuery("INSERT INTO memory_challenge (challenge_id, creator_id, coin_price, time, date, status, start_time, end_time, min_participants, max_participants, accessibility, have_results) VALUES ('$challenge_id', '$creator_id', '$coin_price', '$time', '$date', '$status', '$start_time', '$end_time', '$challenge_min_participants', '$challenge_max_participants', '$accessibility', '$have_results');");
+        return $result;
+    }
+
+
+    public function addChallengeParticipant($challenge_id, $userid)
+    {
+        global $db;
+
+        $finish_time = 0;
+        $finish_status = "pending";
+        $amount_won = 0;
+        $won = "no";
+
+        $result = $db->setQuery("INSERT INTO memory_challenge_participants (challenge_id, userid, finish_time, finish_status, amount_won, won) VALUES ('$challenge_id', '$userid', '$finish_time', '$finish_status', '$amount_won', '$won');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public function getChallengeDetail($challenge_id, $detail)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge WHERE challenge_id='$challenge_id';");
+        $row = mysqli_fetch_assoc($result);
+        $detail = $row[$detail];
+        return $detail;
+    }
+
+    public function setChallengeDetail($challenge_id, $detail, $value)
+    {
+        global $db;
+
+        $result = $db->setQuery("UPDATE memory_challenge SET $detail='$value' WHERE challenge_id='$challenge_id';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateChallengeDetail($challenge_id, $detail, $value, $op)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge WHERE challenge_id='$challenge_id';");
+        $row = mysqli_fetch_assoc($result);
+        $old_value = $row[$detail];
+
+        if ($op == "+") {
+            $new_value = $old_value + $value;
+        } else if ($op == "-") {
+            $new_value = $old_value - $value;
+        }
+
+        $result1 = $db->setQuery("UPDATE memory_challenge SET $detail='$new_value' WHERE challenge_id='$challenge_id';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    public function getChallengeParticipantDetail($challenge_id, $userid, $detail)
+    {
+        global $db;
+        $result = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id' AND userid='$userid';");
+        $row = mysqli_fetch_assoc($result);
+        $received_detail = $row[$detail];
+
+        return $received_detail;
+    }
+
+
+    public function setChallengeParticipantDetail($challenge_id, $userid, $detail, $value)
+    {
+        global $db;
+
+        $result = $db->setQuery("UPDATE memory_challenge_participants SET $detail='$value' WHERE challenge_id='$challenge_id' AND userid='$userid';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getNumChallengeParticipants($challenge_id)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id';");
+        $numrows = mysqli_num_rows($result);
+        return $numrows;
+    }
+
+
+    public function userIsInChallenge($challenge_id, $userid)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id' AND userid='$userid';");
+        $numrows = mysqli_num_rows($result);
+        if ($numrows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+
+    public function checkChallengeResults()
+    {
+        global $db;
+        $user = new User();
+        $admin = new Admin();
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge WHERE have_results='no';");
+        while ($row = mysqli_fetch_assoc($result)) {
+            $challenge_id = $row['challenge_id'];
+            $finish_time_array = [];
+
+            $result1 = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id' AND finish_status='played';");
+
+            while ($row1 = mysqli_fetch_assoc($result1)) {
+                $finish_time_array[count($finish_time_array)] = $row1['finish_time'];
+            }
+
+            sort($finish_time_array);
+
+            $winner_finish_time = $finish_time_array[0];
+
+            // checking for tiles/draws
+            $finish_time_array[0] = "123456789";
+            $x = 0;
+            foreach ($finish_time_array as $finish_time_single) {
+                if ($finish_time_single == $winner_finish_time) {
+                    $x++;
+                }
+            }
+
+            // evaluate the prices of the winner/winners and also the admin price
+            $coin_price = $this->getChallengeDetail($challenge_id, "coin_price");
+            $num_participants = $this->getNumChallengeParticipants($challenge_id);
+            $winner_price = $coin_price * $num_participants;
+
+            $admin_price = $winner_price * 0.2;
+            $winner_price = $winner_price - $admin_price;
+
+            $admin->updateAdminDetail("main_balance", $admin_price, "+");
+            $this->setChallengeDetail($challenge_id, "have_results", "yes");
+
+
+            $challenge_min_participants = $this->getChallengeDetail($challenge_id, "min_participants");
+
+
+            // check is participants is equal or greater than th min participants set for the challenge
+            if ($num_participants >= $challenge_min_participants) {
+
+
+                // check if no tile/draw
+                if ($x == 0) {
+                    $result2 = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id' AND finish_time = '$winner_finish_time' AND finish_status='played';");
+                    $row2 = mysqli_fetch_assoc($result2);
+                    $winner_id = $row2['userid'];
+
+
+                    $user->updateUserDetail($winner_id, "withdrawable_balance", $winner_price, "+");
+                    $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $winner_price);
+                    $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                } else {
+
+                    if ($x + 1 == $num_participants) {
+                        $correct_winner_price = ($winner_price + $admin_price) / ($x + 1);
+                        $admin->updateAdminDetail("main_balance", $admin_price, "-");
+                    } else {
+                        $correct_winner_price = round($winner_price / ($x + 1));
+                    }
+
+                    $result2 = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id' AND finish_time = '$winner_finish_time' AND finish_status='played';");
+                    while ($row2 = mysqli_fetch_assoc($result2)) {
+                        $winner_id = $row2['userid'];
+                        $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                        $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $correct_winner_price);
+                        $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                    }
+                }
+            } else {
+                // return back players money
+                $correct_winner_price = ($winner_price + $admin_price) / $num_participants;
+                $admin->updateAdminDetail("main_balance", $admin_price, "-");
+                $result2 = $db->setQuery("SELECT * FROM memory_challenge_participants WHERE challenge_id='$challenge_id';");
+                while ($row2 = mysqli_fetch_assoc($result2)) {
+                    $winner_id = $row2['userid'];
+                    $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                    $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $correct_winner_price);
+                    $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                }
+            }
+        }
+    }
+
+    /*** CHALLENGE METHODS END **** */
 }

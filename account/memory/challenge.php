@@ -1,9 +1,58 @@
 <?php
+session_start();
+include '../../classes/database.class.php';
+include '../../classes/memory_contest.class.php';
+include '../../classes/users.class.php';
+include '../../classes/activities.class.php';
 
-// include '../../classes/database.class.php';
-// include '../../classes/typing_contest.class.php';
-// include '../../classes/users.class.php';
+$memory = new MemoryContest();
+$user = new User();
+$activity = new Activity();
 
+
+$session_id = $_SESSION['id'];
+$challenge_id = $_GET['challenge_id'];
+
+
+
+
+if ($memory->getChallengeDetail($challenge_id, "status") != "Ended") {
+    if (!$memory->userIsInChallenge($challenge_id, $session_id)) {
+        if ($memory->getNumChallengeParticipants($challenge_id) < $memory->getChallengeDetail($challenge_id, "max_participants")) {
+            $coin_price = $memory->getChallengeDetail($challenge_id, "coin_price");
+            if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
+                $memory->addChallengeParticipant($challenge_id, $session_id);
+                $user->updateUserDetail($session_id, "coins", $coin_price, "-");
+                $activity->createAtivity($session_id, "contest", "memory_challenge", $challenge_id);
+            } else {
+                echo '<script>
+    alert("Sorry you do not have sufficient balance");
+    </script>';
+            }
+        } else {
+            echo '<script>
+            alert("Sorry challenge is full");
+    </script>';
+        }
+    } else {
+
+        if ($memory->getChallengeParticipantDetail($challenge_id, $session_id, "finish_status") == "played") {
+            echo '<script>
+   
+            alert("You already played this contest");
+            </script>';
+        } else {
+            echo '<script>
+   
+            alert("You are already in this challenge");
+            </script>';
+        }
+    }
+} else {
+    echo '<script>
+    alert("Challenge has ended");
+    </script>';
+}
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +165,7 @@
         }
 
         .start-btn {
-            width: 150px;
+            /* width: 150px; */
             background-color: orange;
             color: black;
             padding: 9px;
@@ -212,7 +261,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory</title>
+    <title>Memory Challenge</title>
 
 
     <!-- Google font -->
@@ -233,19 +282,20 @@
 
 <body>
 
+
     <!--=== intro container start ===-->
     <div class="intro-container">
 
         <div class="intro-title">
-            Welcome to <br>
-            Memory Game Contest
+
+            Memory Game Challenge
         </div>
         <div class="intro-title-small">
-            Click the "start" button to begin contest
+            Click the "start" button to begin challenge
         </div>
 
         <div class="centered-div">
-            <button class="start-btn">START</button>
+            <button class="start-btn">START CHALLENGE</button>
         </div>
 
         <div class="intro-howtoplay">
@@ -276,14 +326,8 @@
 
 
     <div class="main-game-container">
-        <!-- 
-        <button id="play" onclick="play_background_sound()">Play</button>
-        <button id="pause" onclick="play_flip_sound()">Pause</button> -->
-
-
-        <!-- <div class="time-container">
-            Time: <span class="mins">1</span>: <span class="secs">30</span>
-        </div> -->
+        <input type="text" class="challenge-id" value="<?php echo $_GET['challenge_id']; ?>">
+        <input type="text" class="user-finish-time" value="<?php echo $memory->getChallengeParticipantDetail($challenge_id, $session_id, "finish_time"); ?>">
 
         <div class="mycard-container">
             <?php
@@ -309,11 +353,7 @@
 
 
 
-    <!-- <audio controls>
-        <source src="sounds/background-music.flac" type="audio/mo4">
-        <source src="horse.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio> -->
+
 
     <!--====== Javascripts & Jquery ======-->
     <script src="../../js/jquery-3.2.1.min.js"></script>
@@ -329,10 +369,14 @@
 
 
     <script>
+        var contest_has_finished = false;
+
         //check when start button is clicked
         $(".start-btn").click(function() {
             $(".intro-container").slideUp();
             play_background_sound();
+
+            update_database_finish_time();
         })
 
 
@@ -369,8 +413,9 @@
         }
 
 
+        var user_finish_time = $(".user-finish-time").val();
         var count_up = new CountUpTimer();
-        count_up.start();
+        count_up.start(user_finish_time);
 
         function end_game() {
             // alert("you finished in " + count_up.get_seconds() + " seconds")
@@ -380,6 +425,9 @@
             $(".winning-container").fadeIn();
             $(".winning-box").addClass("winning-box-animate")
             $(".time").html(time);
+
+            contest_has_finished = true;
+            mark_user_has_played_contest();
         }
 
         function retry() {
@@ -465,23 +513,6 @@
             }
         }
 
-
-        // disable cards
-        function disable_cards() {
-            var cards = document.getElementsByClassName("mycard");
-            for (i = 0; i < cards.length; i++) {
-                cards[i].disabled = true;
-            }
-        }
-
-        // enable cards
-        function enable_cards() {
-            var cards = document.getElementsByClassName("mycard");
-            for (i = 0; i < cards.length; i++) {
-                cards[i].disabled = false;
-            }
-        }
-
         /**** HELPING FUNCTIONS END *** */
 
         $(".mycard").click(function() {
@@ -536,9 +567,6 @@
         function check_card() {
             if (first_card == second_card) {
 
-                // disable al cards
-                disable_cards();
-
                 // delay for 1s before telling user the correct answer
                 setTimeout(function() {
                     // alert("it is a match")
@@ -560,16 +588,10 @@
                     // render all correct cards
                     render_correct_cards();
 
-                    // enable all cards
-                    enable_cards();
-
-                }, 500);
+                }, 1000);
 
 
             } else {
-
-                // disable all cards from clicking
-                disable_cards();
 
                 // delay for 1s before telling user he/she is wrong
                 setTimeout(function() {
@@ -583,14 +605,65 @@
                     // render all correct cards
                     render_correct_cards();
 
-                    // enable cards
-                    enable_cards();
 
                 }, 1000);
 
 
 
             }
+
+        }
+    </script>
+
+
+    <script>
+        function update_database_finish_time() {
+            var finish_interval = setInterval(function() {
+                var update_user_finish_time_count = "yes";
+                var challenge_id = $(".challenge-id").val();
+                var finish_time = count_up.get_seconds();
+                $.ajax({
+
+                    url: "ajax-memory-challenge.php",
+                    method: "POST",
+                    async: false,
+                    data: {
+                        "update_user_finish_time_count": update_user_finish_time_count,
+                        "challenge_id": challenge_id,
+                        "finish_time": finish_time
+                    },
+                    success: function(data) {
+                        // alert("ya")
+                    }
+
+                });
+
+                if (contest_has_finished == true) {
+                    clearInterval(finish_interval);
+                }
+
+
+            }, 500);
+
+        }
+
+        function mark_user_has_played_contest() {
+            var challenge_id = $(".challenge-id").val();
+            var mark_user_has_played_contest = "yes";
+            $.ajax({
+
+                url: "ajax-memory-challenge.php",
+                method: "POST",
+                async: false,
+                data: {
+                    "mark_user_has_played_contest": mark_user_has_played_contest,
+                    "challenge_id": challenge_id,
+                },
+                success: function(data) {
+                    alert("You have played this challenge");
+                }
+
+            });
 
         }
     </script>

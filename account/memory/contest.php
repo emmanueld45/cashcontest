@@ -1,8 +1,49 @@
 <?php
+session_start();
+include '../../classes/database.class.php';
+include '../../classes/memory_contest.class.php';
+include '../../classes/users.class.php';
+include '../../classes/activities.class.php';
 
-// include '../../classes/database.class.php';
-// include '../../classes/typing_contest.class.php';
-// include '../../classes/users.class.php';
+$memory = new MemoryContest();
+$user = new User();
+$activity = new Activity();
+
+
+$session_id = $_SESSION['id'];
+$contest_id = $_GET['contest_id'];
+if ($memory->getDetail($contest_id, "status") != "Ended") {
+    if (!$memory->userIsInContest($contest_id, $session_id)) {
+        if ($memory->getNumParticipants($contest_id) < $memory->max_participants) {
+            $coin_price = $memory->getContestCoinPrice($contest_id);
+            if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
+                $memory->addParticipant($contest_id, $session_id);
+                $user->updateUserDetail($session_id, "coins", $coin_price, "-");
+                $activity->createAtivity($session_id, "contest", "memory_contest", $contest_id);
+            } else {
+                echo '<script>
+    alert("Sorry you do not have sufficient balance");
+    </script>';
+            }
+        } else {
+            echo '<script>
+            alert("Sorry contest is full");
+    </script>';
+        }
+    } else {
+
+        if ($memory->getParticipantDetail($contest_id, $session_id, "finish_status") == "played") {
+            echo '<script>
+   
+            alert("You already played this contest");
+            </script>';
+        }
+    }
+} else {
+    echo '<script>
+    alert("Contest has ended");
+    </script>';
+}
 
 ?>
 
@@ -233,6 +274,7 @@
 
 <body>
 
+
     <!--=== intro container start ===-->
     <div class="intro-container">
 
@@ -276,14 +318,8 @@
 
 
     <div class="main-game-container">
-        <!-- 
-        <button id="play" onclick="play_background_sound()">Play</button>
-        <button id="pause" onclick="play_flip_sound()">Pause</button> -->
-
-
-        <!-- <div class="time-container">
-            Time: <span class="mins">1</span>: <span class="secs">30</span>
-        </div> -->
+        <input type="text" class="contest-id" value="<?php echo $_GET['contest_id']; ?>">
+        <input type="text" class="user-finish-time" value="<?php echo $memory->getParticipantDetail($contest_id, $session_id, "finish_time"); ?>">
 
         <div class="mycard-container">
             <?php
@@ -309,11 +345,7 @@
 
 
 
-    <!-- <audio controls>
-        <source src="sounds/background-music.flac" type="audio/mo4">
-        <source src="horse.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio> -->
+
 
     <!--====== Javascripts & Jquery ======-->
     <script src="../../js/jquery-3.2.1.min.js"></script>
@@ -329,10 +361,14 @@
 
 
     <script>
+        var contest_has_finished = false;
+
         //check when start button is clicked
         $(".start-btn").click(function() {
             $(".intro-container").slideUp();
             play_background_sound();
+
+            update_database_finish_time();
         })
 
 
@@ -369,8 +405,9 @@
         }
 
 
+        var user_finish_time = $(".user-finish-time").val();
         var count_up = new CountUpTimer();
-        count_up.start();
+        count_up.start(user_finish_time);
 
         function end_game() {
             // alert("you finished in " + count_up.get_seconds() + " seconds")
@@ -380,6 +417,9 @@
             $(".winning-container").fadeIn();
             $(".winning-box").addClass("winning-box-animate")
             $(".time").html(time);
+
+            contest_has_finished = true;
+            mark_user_has_played_contest();
         }
 
         function retry() {
@@ -536,7 +576,7 @@
         function check_card() {
             if (first_card == second_card) {
 
-                // disable al cards
+                // disable all cards
                 disable_cards();
 
                 // delay for 1s before telling user the correct answer
@@ -560,15 +600,17 @@
                     // render all correct cards
                     render_correct_cards();
 
+
                     // enable all cards
                     enable_cards();
+
 
                 }, 500);
 
 
             } else {
 
-                // disable all cards from clicking
+                // disable all cards
                 disable_cards();
 
                 // delay for 1s before telling user he/she is wrong
@@ -583,7 +625,7 @@
                     // render all correct cards
                     render_correct_cards();
 
-                    // enable cards
+                    // enable all cards
                     enable_cards();
 
                 }, 1000);
@@ -591,6 +633,59 @@
 
 
             }
+
+        }
+    </script>
+
+
+    <script>
+        function update_database_finish_time() {
+            var finish_interval = setInterval(function() {
+                var update_user_finish_time_count = "yes";
+                var contest_id = $(".contest-id").val();
+                var finish_time = count_up.get_seconds();
+                $.ajax({
+
+                    url: "ajax-memory-contest.php",
+                    method: "POST",
+                    async: false,
+                    data: {
+                        "update_user_finish_time_count": update_user_finish_time_count,
+                        "contest_id": contest_id,
+                        "finish_time": finish_time
+                    },
+                    success: function(data) {
+                        // alert("ya")
+                    }
+
+                });
+
+                if (contest_has_finished == true) {
+                    clearInterval(finish_interval);
+                }
+
+
+            }, 500);
+
+        }
+
+        function mark_user_has_played_contest() {
+            var contest_id = $(".contest-id").val();
+            var mark_user_has_played_contest = "yes";
+            $.ajax({
+
+                url: "ajax-memory-contest.php",
+                method: "POST",
+                async: false,
+                data: {
+                    "mark_user_has_played_contest": mark_user_has_played_contest,
+                    "contest_id": contest_id,
+                },
+                success: function(data) {
+                    //  alert("You have played this contest");
+                }
+
+            });
 
         }
     </script>
