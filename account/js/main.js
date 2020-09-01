@@ -46,3 +46,7 @@ $(window).on("load", function () {
     autoplay: true,
   });
 })(jQuery);
+
+function go_back() {
+  window.history.back();
+}

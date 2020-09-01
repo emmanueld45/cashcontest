@@ -14,6 +14,24 @@
     top: 0px;
   }
 
+  .main-container-background {
+    width: 100%;
+    position: relative;
+    background-color: #08192d;
+    padding-bottom: 100px;
+  }
+
+  .main-container {
+    width: 90%;
+    margin: auto;
+    height: 500px;
+    border-radius: 10px;
+    background-color: #1c294a;
+    color: white;
+    opacity: 0.9;
+    padding: 10px;
+  }
+
   /*** FRONT PAGE START ****/
   .frontpage-banner-container {
     width: 100%;
@@ -25,26 +43,197 @@
     /* object-fit: cover; */
   }
 
-  .intro-modal-background {
+  .intro-modal {
     width: 100%;
     position: fixed;
     top: 0px;
     left: 0px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+  }
+
+  .intro-modal .close-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid grey;
+    color: grey;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  .intro-modal .box {
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4),
+      -10px 10px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .banner-slider {
+    background-color: #08192d;
+  }
+  .banner-slider .banner {
+    width: 100%;
+    height: 150px;
+    background-color: #1c294a;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    position: relative;
+    margin-bottom: 0px;
+  }
+
+  .banner-slider .banner .img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
+  .owl-nav {
+    display: none;
+  }
+  .icons-container {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: ;
+    /* border-top: 1px solid lightgrey; */
+  }
+
+  .icons-box {
+    width: 25%;
+    padding: 5px;
+    background-color: #08192d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icons-box a {
+    background-color: #1c294a;
+    width: 80%;
+    /* height: 50px; */
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .icons-box a .icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .icons-box a span {
+    color: white;
+    opacity: 0.7;
+    font-size: 13px;
+    display: block;
+  }
+
+  .live-feed-container {
+    width: 90%;
+    height: 400px;
+    background-color: #1c294a;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 30px;
+  }
+
+  .live-feed-header {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    opacity: 0.8;
+  }
+  .live-feed-body {
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    overflow-y: scroll;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .live-feed-box {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 15px;
+  }
+
+  .live-feed-box .left {
+    width: 25%;
+    padding: 10px;
+  }
+
+  .live-feed-box .right {
+    width: 75%;
+    padding: 10px;
+  }
+  .live-feed-box .left .img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .live-feed-box .right .text {
+    color: white;
+    position: relative;
+    opacity: 0.8;
+  }
+  .live-feed-box .right .time {
+    color: white;
+    position: relative;
+    opacity: 0.4;
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
   }
   /*** FRONT PAGE END ***/
 }
 
-/** end of smaller screen **/
+/** ********************end of smaller screen********************** **/
 
-/** start of bigger screen*/
+/** *******************start of bigger screen************************/
 @media only screen and (min-width: 690px) {
   .header-logo {
     font-weight: bold;
     font-size: 23px;
   }
 
+  .main-container-background {
+    width: 100%;
+    position: relative;
+    background-color: #08192d;
+    padding-bottom: 100px;
+  }
+
+  .main-container {
+    width: 60%;
+    margin: auto;
+    height: 500px;
+    border-radius: 10px;
+    background-color: #1c294a;
+    color: white;
+    opacity: 0.9;
+    padding: 10px;
+  }
   /*** FRONT PAGE START ****/
   .frontpage-banner-container {
     width: 100%;
@@ -56,16 +245,29 @@
     /* object-fit: cover; */
   }
 
-  .intro-modal-background {
+  .intro-modal {
     width: 100%;
     position: fixed;
     top: 0px;
     left: 0px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
   }
 
-  .intro-modal {
+  .intro-modal .close-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid grey;
+    color: grey;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 10px;
+    right: 150px;
+  }
+
+  .intro-modal .box {
     width: 400px;
     height: 500px;
     background-color: white;
@@ -74,6 +276,141 @@
     margin-top: 50px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4),
       -10px 10px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .banner-slider {
+    background-color: #08192d;
+  }
+  .banner-slider .banner {
+    width: 600px;
+    height: 300px;
+    background-color: #1c294a;
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
+    position: relative;
+  }
+
+  .banner-slider .banner .img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
+  .owl-nav {
+    display: none;
+  }
+  .icons-container {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: ;
+
+    /* border-top: 1px solid lightgrey; */
+  }
+
+  .icons-box {
+    width: 25%;
+    padding: 5px;
+    background-color: #08192d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icons-box a {
+    background-color: #1c294a;
+    width: 80%;
+    /* height: 50px; */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .icons-box a .icon {
+    width: 40px;
+    height: 40px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .icons-box a span {
+    color: white;
+    opacity: 0.7;
+    font-size: 18px;
+    float: left;
+    position: relative;
+    top: 10px;
+    /* display: block; */
+  }
+
+  .live-feed-container {
+    width: 90%;
+    height: 400px;
+    background-color: #1c294a;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .live-feed-header {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    opacity: 0.8;
+  }
+  .live-feed-body {
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    overflow-y: scroll;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .live-feed-box {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 15px;
+  }
+
+  .live-feed-box .left {
+    width: 15%;
+    padding: 10px;
+  }
+
+  .live-feed-box .right {
+    width: 85%;
+    padding: 10px;
+  }
+  .live-feed-box .left .img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .live-feed-box .right .text {
+    color: white;
+    position: relative;
+    opacity: 0.8;
+  }
+  .live-feed-box .right .time {
+    color: white;
+    position: relative;
+    opacity: 0.4;
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
   }
   /*** FRONT PAGE END ***/
 }

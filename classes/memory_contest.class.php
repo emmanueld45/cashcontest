@@ -13,6 +13,44 @@ class MemoryContest
     public $max_participants = 5;
     public $min_participants = 1;
 
+
+
+    public function getContestImage()
+    {
+        $image1 = "contestimages/contestimg1.jpg";
+        $image2 = "contestimages/contestimg2.jpg";
+        $image3 = "contestimages/contestimg3.jpg";
+
+        $image_arr = array($image1, $image2, $image3);
+        $image_arr_length = count($image_arr) - 1;
+        $rand = RAND(0, $image_arr_length);
+        $image = $image_arr[$rand];
+
+        return $image;
+    }
+
+    public function createContestCode()
+    {
+        $alph = str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        $nums = str_shuffle("12345678901234567890");
+        if (strlen($alph) > 3) {
+            $cutalph = substr($alph, 0, 3);
+
+            $alph = $cutalph;
+        }
+
+        if (strlen($nums) > 3) {
+            $cutnums = substr($nums, 0, 3);
+
+            $nums = $cutnums;
+        }
+
+        $result = $alph . $nums;
+        $final_result = str_shuffle($result);
+        return "#" . $final_result;
+    }
+
+
     public function createContest($contest_category)
     {
         global $db;
@@ -23,12 +61,14 @@ class MemoryContest
         $time = time();
         $date = date("d-m-y");
         $this->start_time = time();
-        $this->end_time = 60;
+        $this->end_time = $this->start_time + 120;
 
         $have_results = "no";
         $status = "Running";
+        $contest_code = $this->createContestCode();
+        $contest_image = $this->getContestImage();
 
-        $result = $db->setQuery("INSERT INTO memory_contest (contest_id, image, contest_category, time, date, status, start_time, end_time, have_results) VALUES ('$contest_id', '$image', '$contest_category', '$time', '$date', '$status', '$this->start_time', '$this->end_time', '$have_results');");
+        $result = $db->setQuery("INSERT INTO memory_contest (contest_id, contest_code, contest_image, contest_category, time, date, status, start_time, end_time, have_results) VALUES ('$contest_id', '$contest_code', '$contest_image', '$contest_category', '$time', '$date', '$status', '$this->start_time', '$this->end_time', '$have_results');");
     }
 
 
@@ -191,13 +231,51 @@ class MemoryContest
     }
 
 
+
+
+    public function userHavePlayedContest($contest_id, $userid)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id' AND userid='$userid';");
+        $row = mysqli_fetch_assoc($result);
+        $numrows = mysqli_num_rows($result);
+        if ($numrows > 0) {
+            $finish_status = $row['finish_status'];
+            if ($finish_status == "played") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public function reduceEndTime()
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_contest WHERE have_results='no';");
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $contest_id = $row['contest_id'];
+
+            $this->updateDetail($contest_id, "end_time", "1", "-");
+        }
+    }
+
+
     public function checkResults()
     {
         global $db;
         $user = new User();
         $admin = new Admin();
 
-        $result = $db->setQuery("SELECT * FROM memory_contest WHERE have_results='no';");
+        $result = $db->setQuery("SELECT * FROM memory_contest WHERE have_results='no'  AND status='Ended';");
         while ($row = mysqli_fetch_assoc($result)) {
             $contest_id = $row['contest_id'];
             $finish_time_array = [];
@@ -526,6 +604,20 @@ class MemoryContest
 
 
 
+
+    public function reduceChallengeEndTime()
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM memory_challenge WHERE have_results='no';");
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $challenge_id = $row['challenge_id'];
+
+            $this->updateChallengeDetail($challenge_id, "end_time", "1", "-");
+        }
+    }
 
 
     public function checkChallengeResults()

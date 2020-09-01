@@ -4,7 +4,7 @@ class User
 {
     public $user_id;
 
-    public function createUser($name, $email, $phone, $password)
+    public function createUser($firstname, $lastname, $email, $phone, $password)
     {
         global $db;
         $uniqueid = uniqid();
@@ -19,7 +19,7 @@ class User
         $total_received = 0;
         $airtime_balance = 0;
 
-        $result = $db->setQuery("INSERT INTO users (uniqueid, name, phone, email, password, image, coins, withdrawable_balance, status, time, date, new, total_received, airtime_balance) VALUES ('$uniqueid', '$name', '$phone', '$email', '$hashed', '$image', '$coins', '$withdrawable_balance', '$status', '$time', '$date', '$new', '$total_received', '$airtime_balance');");
+        $result = $db->setQuery("INSERT INTO users (uniqueid, firstname, lastname, phone, email, password, image, coins, withdrawable_balance, status, time, date, new, total_received, airtime_balance) VALUES ('$uniqueid', '$firstname', '$lastname', '$phone', '$email', '$hashed', '$image', '$coins', '$withdrawable_balance', '$status', '$time', '$date', '$new', '$total_received', '$airtime_balance');");
         return $result;
     }
 

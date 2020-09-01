@@ -2,7 +2,7 @@
 <html lang="zxx">
 
 <head>
-    <title>CashContest | Home</title>
+    <title>Contestground | Home</title>
     <meta charset="UTF-8">
     <meta name="description" content="SolMusic HTML Template">
     <meta name="keywords" content="music, html">
@@ -23,6 +23,8 @@
     <!-- Main Stylesheets -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/mystyle.css" />
+
+    <link rel="stylesheet" href="account/css/mystyle.css" />
 
 
 
@@ -86,28 +88,131 @@
     <!-- Hero section end -->
 
 
-    <!--== FRONT PAGE BANNER START ===--->
+    <!--== FRONT PAGE BANNER START ===---
     <div class="frontpage-banner-container">
         <img src="contestimages/gameimg5.jpg" class="frontpage-banner-img">
     </div>
     <!--== FRONT PAGE BANNER START ===--->
 
 
+    <div class="banner-slider owl-carousel">
+        <div class="banner"> <img src="contestimages/gameimg5.jpg" class="img"></div>
+        <div class="banner"> <img src="contestimages/gameimg1.jpg" class="img"> </div>
+        <div class="banner"> <img src="contestimages/gameimg3.jpg" class="img"> </div>
 
+    </div>
+    <!--=== icons btn start ==--->
+    <div class="icons-container">
+        <div class="icons-box"><a href="account/all-contests.php"><img src="img/icons/gems.png" class="icon"><span>Contests</span></a></div>
+        <div class="icons-box"><a href="#"><img src="img/icons/brain.png" class="icon"><span>FAQ</span></a></div>
+        <div class="icons-box"><a href="#"><img src="img/icons/wheel1.png" class="icon"><span>Spin</span></a></div>
+        <div class="icons-box"><a href="auth/login.php"><img src="img/icons/user1.png" class="icon"><span>Register</span></a></div>
+    </div>
+    <!--=== icons btn start ==--->
     <div style="margin-top:-70px !important;"></div>
+
+
 
     <!-- Intro section -->
     <section class="intro-section spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="section-title">
-                        <h2>Cash out weekly playing simple games! <i class="fa fa-gamepad" style="color:orange;"></i></h2>
+                    <div class="section-title" style="margin-bottom:8px;">
+                        <h3>Cash out weekly playing simple games! <i class="fa fa-gamepad" style="color:orange;"></i></h2>
                     </div>
-                </div>
-                <div class="col-lg-6">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
                     <a href="#" class="site-btn">Start now!</a>
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="live-feed-container">
+                        <div class="live-feed-header">LIVE FEED <i class="fa fa-feed" style="color:#fc0254;"></i></div>
+                        <div class="live-feed-body">
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="live-feed-box">
+                                <div class="left">
+                                    <img src="img/artist.jpg" class="img">
+                                </div>
+
+                                <div class="right">
+                                    <span class="text">Emmy just won <span style="color:mediumseagreen;"><span>&#8358</span>450</span></span>
+                                    <span class="time">3minutes ago.</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -271,9 +376,10 @@
     <!-- Premium section end -->
 
 
-    <!--=== intro modal start ==---
-    <div class="intro-modal-background">
-        <div class="intro-modal"></div>
+    <!--=== intro modal start ==--->
+    <div class="intro-modal">
+        <button class="close-btn intro-modal-close-btn"><i class="fa fa-times"></i></button>
+        <div class="box"></div>
     </div>
     <!--=== intro modal end ==--->
 
@@ -281,7 +387,9 @@
     <?php include 'footer.php'; ?>
     <!-- footer section end -->
 
-
+    <?php
+    include 'account/mobile-bottom-nav.php';
+    ?>
     <!--====== Javascripts & Jquery ======-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -292,7 +400,34 @@
     <script src="js/mymain.js"></script>
 
 
-    <script id="provello_script" src="http://provello.ngoffer.com.ng/provello.js?provello_key=123456789"></script>
+    <script>
+        $('.banner-slider').owlCarousel({
+            center: true,
+            items: 2,
+            loop: true,
+            margin: 10,
+            dots: true,
+            dotsEach: true,
+            responsive: {
+                0: {
+                    items: 2,
+                    nav: true
+                },
+
+                600: {
+                    items: 2
+                }
+            }
+        });
+
+
+        $(".intro-modal-close-btn").click(function() {
+            $(".intro-modal").fadeOut();
+        })
+        $(".intro-modal").click(function() {
+            $(".intro-modal").fadeOut();
+        })
+    </script>
 
 </body>
 

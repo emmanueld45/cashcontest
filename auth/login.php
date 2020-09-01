@@ -48,11 +48,11 @@ include '../classes/users.class.php';
       <div class="content-top-agile">
         <h2 style="position:relative;top:20px;">Login Account</h2>
         <?php
-if(isset($_GET['email_phone_incorrect'])){
-echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
-}
+        if (isset($_GET['email_phone_incorrect'])) {
+          echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
+        }
 
-?>
+        ?>
       </div>
       <div class="content-bottom">
         <form action="" method="POST">
@@ -61,7 +61,7 @@ echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
             <!-- <div class="field-group">
               <input name="text1" id="text1" type="text" value="" placeholder="Username" required />
             </div> -->
-         
+
             <div class="field-group">
               <input name="email_phone" id="email" type="text" value="" placeholder="Phone or Email" required />
             </div>
@@ -85,7 +85,7 @@ echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
   </div>
   <div class="copyright text-center">
     <p>
-      © 2018 CashContest
+      © 2020 CashContest
       <!-- <a href="http://w3layouts.com">W3layouts</a> -->
     </p>
   </div>
@@ -107,7 +107,7 @@ echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
     $numrows = mysqli_num_rows($result);
     $row = mysqli_fetch_assoc($result);
 
-    
+
     if ($numrows != 0) {
       $hashed = $row['password'];
 
@@ -115,7 +115,7 @@ echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
 
         $_SESSION['id'] = $row['uniqueid'];
         echo '<script>
-      window.location.href="../account?login_success=true";
+      window.location.href="../account/all-contests.php?login_success=true";
       </script>';
       }
       echo '<script>

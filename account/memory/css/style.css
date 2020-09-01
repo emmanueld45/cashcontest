@@ -1,236 +1,776 @@
 /** start of  smaller screen*/
 @media only screen and (max-width: 690px) {
-  /*** Contest intro start ***/
-  .main-container {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: #0a183d;
-  }
-
-  .back-btn {
-    color: white;
-    padding: 10px;
-    font-size: 25px;
-    position: relative;
-    top: 5px;
-    left: 5px;
-  }
-
-  .stroke-transparent {
-    -webkit-text-stroke: 1px #fff;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .participants-btn {
-    position: fixed;
-    top: 10px;
-    right: 5px;
-    border: none;
-    color: white;
-    background-color: rgba(0, 0, 0, 0);
-    font-size: 20px;
-  }
-
-  .count-down-container {
-    width: 100%;
-    text-align: center;
-    color: white;
-    padding: 10px;
-    position: relative;
-    top: 20%;
-  }
-
-  .count-down-title {
-    color: orange;
-  }
-
-  .count-down-btn {
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    font-size: bold;
-    font-size: 50px;
-    background-color: white;
-  }
-
-  .contest-ended-container {
-    width: 100%;
-    text-align: center;
-    color: white;
-    padding: 10px;
-    position: relative;
-    top: 20%;
-  }
-
-  .contest-ended-title {
-    color: white;
-  }
-
-  .contest-ended-btn {
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    font-size: bold;
-    font-size: 25px;
-    background-color: white;
-    color: red;
-    border: 2px solid red;
-  }
-  /*** Contest into end ***/
-
   /**** Contest page start ***/
   .main-contest-container {
     width: 100%;
   }
 
-  .typing-container {
-    width: 90%;
-    position: fixed;
-    bottom: 0px;
-    left: 5%;
-    height: 250px;
-    background-color: white;
-    border-radius: 10px 10px 0px 0px;
-    border: 1px solid lightgrey;
-  }
-
-  .typing-area {
-    width: 100%;
-    height: 200px;
-    border: none;
-    background-color: white;
-    border: none;
-    padding: 10px;
-  }
-
-  .next-btn-container {
-    width: 100%;
-    height: 40px;
-    padding: 5px;
-    border-bottom: 1px solid lightgrey;
-  }
-
-  .next-btn {
-    float: right;
-    background-color: mediumseagreen;
+  .volume-on-btn {
+    position: absolute;
     color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 3px 5px;
+    top: 8px;
+    right: 8px;
+    z-index: 100000;
+    font-size: 18px;
   }
 
-  .disabled-next-btn {
-    float: right;
-    background-color: #eee;
-    color: grey;
-    border: none;
-    border-radius: 50px;
-    padding: 3px 5px;
-    border: 1px solid grey;
-  }
-
-  .finish-btn {
-    float: right;
-    background-color: crimson;
+  .volume-off-btn {
+    position: absolute;
     color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 3px 5px;
+    top: 8px;
+    right: 8px;
+    z-index: 100000;
+    font-size: 18px;
   }
 
-  .sentence-container {
-    padding: 10px;
+  .time-container {
     width: 100%;
-    margin-top: 10px;
-  }
-
-  .sentence-text {
+    padding: 10px;
     font-weight: bold;
   }
 
-  .contest-sentence-count-container {
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
+  .time-container .minutes {
   }
-  /*** Contest page end ***/
-}
 
-/** end of smaller screen **/
+  .time-container .seconds {
+  }
 
-/** start of bigger screen*/
-@media only screen and (min-width: 690px) {
-  .main-container {
+  .overlay-container {
     position: fixed;
     top: 0px;
     left: 0px;
     width: 100%;
     height: 100%;
-    background-color: #0a183d;
-  }
-
-  .back-btn {
-    color: white;
-    padding: 10px;
-    font-size: 25px;
+    z-index: 1000;
+    background-color: #08192d;
+    display: none;
     position: relative;
-    top: 5px;
-    left: 5px;
   }
 
-  .count-down-container {
+  .overlay-container .go-back {
+    width: 30px;
+    height: 30px;
+    border-radius: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    opacity: 0.8;
+    border: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    line-height: 10px;
+  }
+  .overlay-container .centered-div .icon {
+    width: 80px;
+    height: 80px;
+    margin-top: 20%;
+    margin-bottom: 15px;
+  }
+
+  .overlay-container .message-container {
+    width: 80%;
+    margin: auto;
+    position: relative;
+
+    left: 0px;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .main-game-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /* background: radial-gradient(green, mediumseagreen); */
+    background: radial-gradient(orange, brown);
+    top: 0px;
+    left: 0px;
+  }
+
+  .mycard-container {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    background-color: ;
+    margin-top: 50px;
+  }
+
+  .mycard {
+    width: 50px;
+    height: 70px;
+    background-color: #111;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    margin: 10px;
+    border: none;
+    color: grey;
+    font-size: 25px;
+    transition: 0.3s ease-in-out;
+    font-weight: bold;
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+  }
+
+  .correct {
+    width: 50px;
+    height: 70px;
+    background-color: white;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    color: grey;
+    font-size: 19px;
+    transition: 0.4s ease-in-out;
+  }
+
+  .time-container {
+    width: 100%;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .intro-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 500;
+    /* display: none; */
+    /* filter: blur(50px) */
+  }
+
+  .intro-title {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 22px;
+    margin-top: 50px;
+    color: white;
+    font-weight: bold;
+  }
+
+  .intro-title-small {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 17px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: white;
+    /* font-weight: bold; */
+  }
+
+  .intro-howtoplay {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .centered-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .start-btn {
+    width: 150px;
+    background-color: orange;
+    color: black;
+    padding: 9px;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+  }
+
+  .winning-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    z-index: 1000;
+    /* filter: blur(50px) */
+  }
+
+  .winning-box {
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+
+    border: 3px solid brown;
+    background-color: moccasin;
+    transition: 1s ease;
+    padding: 10px;
+  }
+
+  .winning-box-animate {
+    animation: winningboxanimation 1s ease-in-out;
+  }
+
+  @keyframes winningboxanimation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    30% {
+      transform: rotate(25deg);
+    }
+
+    70% {
+      transform: rotate(-25deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .winning-box-title {
+    width: 100%;
+    padding: 10px;
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    color: brown;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .winning-box-time {
     width: 100%;
     text-align: center;
-    color: white;
-    padding: 10px;
-    position: relative;
-    top: 20%;
+    font-size: 20px;
+    font-weight: bold;
   }
 
-  .count-down-title {
-    color: orange;
-  }
-
-  .count-down-btn {
+  .exit-btn {
     width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    font-size: bold;
-    font-size: 50px;
-    background-color: white;
+    background-color: orange;
+    color: black;
+    padding: 5px;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
   }
 
-  .contest-ended-container {
+  /*** Contest page end ***/
+
+  /*** RESULTS PAGE START ****/
+  .results-container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
     width: 100%;
-    text-align: center;
-    color: white;
-    padding: 10px;
-    position: relative;
-    top: 20%;
+    height: 100%;
+    background-color: #1c294a;
+    margin: auto;
+    /* margin-top: 30px; */
+    overflow-y: scroll;
   }
 
-  .contest-ended-title {
-    color: white;
+  .results-icon-box {
+    widows: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
 
-  .contest-ended-btn {
+  .results-icon-box .icon {
     width: 100px;
     height: 100px;
-    border-radius: 100px;
-    font-size: bold;
-    font-size: 25px;
-    background-color: white;
-    color: red;
-    border: 2px solid red;
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    animation: iconanimation 2s ease-in-out infinite;
   }
+
+  @keyframes iconanimation {
+    0% {
+      transform: rotateY(0deg);
+    }
+    50% {
+      transform: rotateY(180deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+  .results-box {
+    width: 90%;
+    margin: auto;
+    /* border: 1px solid lightgrey; */
+    border-radius: 3px;
+    background-color: white;
+    margin-bottom: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .results-box.active {
+    background-color: mediumseagreen;
+    color: white;
+  }
+
+  .results-box .left {
+    width: 20%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .left .img {
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+  }
+
+  .results-box .middle {
+    width: 60%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .middle .time {
+    display: block;
+    color: grey;
+    font-size: 13px;
+  }
+
+  .results-box .middle .time.active {
+    color: white;
+    opacity: 0.8;
+  }
+
+  .results-box .middle .won {
+    padding: 3px;
+    background-color: orange;
+    color: black;
+    font-size: 12px;
+    display: block;
+    border: none;
+  }
+  .results-box .right {
+    width: 20%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .right button {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: none;
+    background-color: ;
+  }
+
+  .results-box .right button .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+  }
+  /*** RESULTS PAGE END ***/
 }
 
-/** end of bigger screen **/
+/** end of smaller screen **/
+
+/************** start of bigger screen***************/
+@media only screen and (min-width: 690px) {
+  /**** Contest page start ***/
+
+  .overlay-container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #08192d;
+    display: none;
+    position: relative;
+  }
+
+  .overlay-container .go-back {
+    width: 30px;
+    height: 30px;
+    border-radius: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    opacity: 0.8;
+    border: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    line-height: 10px;
+  }
+  .overlay-container .centered-div .icon {
+    width: 80px;
+    height: 80px;
+    margin-top: 5%;
+    margin-bottom: 15px;
+  }
+
+  .overlay-container .message-container {
+    width: 80%;
+    margin: auto;
+    position: relative;
+
+    left: 0px;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .main-game-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /* background: radial-gradient(green, mediumseagreen); */
+    background: radial-gradient(orange, brown);
+    top: 0px;
+    left: 0px;
+  }
+
+  .volume-on-btn {
+    position: absolute;
+    color: white;
+    top: 8px;
+    right: 8px;
+    z-index: 100000;
+    font-size: 18px;
+  }
+
+  .volume-off-btn {
+    position: absolute;
+    color: white;
+    top: 8px;
+    right: 8px;
+    z-index: 100000;
+    font-size: 18px;
+  }
+
+  .mycard-container {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    background-color: ;
+    margin: auto;
+    margin-top: 50px;
+    width: 400px;
+  }
+
+  .mycard {
+    width: 50px;
+    height: 70px;
+    background-color: #111;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    margin: 10px;
+    border: none;
+    color: grey;
+    font-size: 25px;
+    transition: 0.3s ease-in-out;
+    font-weight: bold;
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+  }
+
+  .correct {
+    width: 50px;
+    height: 70px;
+    background-color: white;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    color: grey;
+    font-size: 19px;
+    transition: 0.4s ease-in-out;
+  }
+
+  .time-container {
+    width: 100%;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .intro-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 500;
+    /* display: none; */
+    /* filter: blur(50px) */
+  }
+
+  .intro-title {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 22px;
+    margin-top: 50px;
+    color: white;
+    font-weight: bold;
+  }
+
+  .intro-title-small {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 17px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: white;
+    /* font-weight: bold; */
+  }
+
+  .intro-howtoplay {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .centered-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .start-btn {
+    width: 150px;
+    background-color: orange;
+    color: black;
+    padding: 9px;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+  }
+
+  .winning-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    z-index: 1000;
+    /* filter: blur(50px) */
+  }
+
+  .winning-box {
+    width: 350px;
+    margin: auto;
+    margin-top: 50px;
+
+    border: 3px solid brown;
+    background-color: moccasin;
+    transition: 1s ease;
+    padding: 10px;
+  }
+
+  .winning-box-animate {
+    animation: winningboxanimation 1s ease-in-out;
+  }
+
+  @keyframes winningboxanimation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    30% {
+      transform: rotate(25deg);
+    }
+
+    70% {
+      transform: rotate(-25deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .winning-box-title {
+    width: 100%;
+    padding: 10px;
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    color: brown;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .winning-box-time {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .exit-btn {
+    width: 100px;
+    background-color: orange;
+    color: black;
+    padding: 5px;
+    box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+  }
+  /*** Contest page end ***/
+
+  /*** RESULTS PAGE START ****/
+  .results-container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #1c294a;
+    margin: auto;
+    /* margin-top: 30px; */
+    overflow-y: scroll;
+  }
+
+  .results-icon-box {
+    widows: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .results-icon-box .icon {
+    width: 100px;
+    height: 100px;
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    animation: iconanimation 2s ease-in-out infinite;
+  }
+
+  @keyframes iconanimation {
+    0% {
+      transform: rotateY(0deg);
+    }
+    50% {
+      transform: rotateY(180deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+  .results-box {
+    width: 400px;
+    margin: auto;
+    /* border: 1px solid lightgrey; */
+    border-radius: 3px;
+    background-color: white;
+    margin-bottom: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .results-box.active {
+    background-color: mediumseagreen;
+    color: white;
+  }
+
+  .results-box .left {
+    width: 20%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .left .img {
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+  }
+
+  .results-box .middle {
+    width: 60%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .middle .time {
+    display: block;
+    color: grey;
+    font-size: 13px;
+  }
+
+  .results-box .middle .time.active {
+    color: white;
+    opacity: 0.8;
+  }
+
+  .results-box .middle .won {
+    padding: 3px;
+    background-color: orange;
+    color: black;
+    font-size: 12px;
+    display: block;
+    border: none;
+  }
+  .results-box .right {
+    width: 20%;
+    background-color: ;
+    padding: 10px;
+  }
+
+  .results-box .right button {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: none;
+    background-color: ;
+  }
+
+  .results-box .right button .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+  }
+  /*** RESULTS PAGE END ***/
+}
+
+/*********** end of bigger screen ****************/
 
 .w {
   color: white;
@@ -238,4 +778,10 @@
 
 .r {
   color: #fc0254;
+}
+
+.centered-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

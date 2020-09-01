@@ -51,13 +51,26 @@ class CountDownTimer {
 class CountUpTimer {
   seconds;
   count_up_interval;
+  minutes_display;
+  seconds_display;
 
-  
+  constructor(minutes_display, seconds_display) {
+    this.minutes_display = minutes_display;
+    this.seconds_display = seconds_display;
+  }
+
+  format_time() {
+    var minutes = Math.floor(this.seconds / 60);
+    var seconds = Math.floor(this.seconds % 60);
+    $(this.minutes_display).html(minutes);
+    $(this.seconds_display).html(seconds);
+  }
 
   start(secs) {
     this.seconds = secs;
     this.count_up_interval = setInterval(() => {
       this.seconds++;
+      this.format_time();
     }, 1000);
   }
 

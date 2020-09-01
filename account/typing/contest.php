@@ -15,38 +15,39 @@ $user = new User();
 $session_id = $_SESSION['id'];
 $contest_id = $_GET['contest_id'];
 
-if ($typing->getDetail($contest_id, "status") != "Ended") {
-    if (!$typing->userIsInContest($contest_id, $session_id)) {
-        if ($typing->getNumParticipants($contest_id) < $typing->max_participants) {
-            $coin_price = $typing->getContestCoinPrice($contest_id);
-            if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
-                $typing->addParticipant($contest_id, $session_id);
-                $user->updateUserDetail($session_id, "coins", $coin_price, "-");
-                $activity->createAtivity($session_id, "contest", "typing_contest", $contest_id);
-            } else {
-                echo '<script>
-    alert("Sorry you do not have sufficient balance");
-    </script>';
-            }
-        } else {
-            echo '<script>
-            alert("Sorry contest is full");
-    </script>';
-        }
-    } else {
+// if ($typing->getDetail($contest_id, "status") != "Ended") {
+//     if (!$typing->userIsInContest($contest_id, $session_id)) {
+//         if ($typing->getNumParticipants($contest_id) < $typing->max_participants) {
+//             $coin_price = $typing->getContestCoinPrice($contest_id);
+//             if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
+//                 $typing->addParticipant($contest_id, $session_id);
+//                 $user->updateUserDetail($session_id, "coins", $coin_price, "-");
+//                 $activity->createAtivity($session_id, "contest", "typing_contest", $contest_id);
+//             } else {
+//                 echo '<script>
+//     alert("Sorry you do not have sufficient balance");
+//     </script>';
+//             }
+//         } else {
+//             echo '<script>
+//             alert("Sorry contest is full");
+//     </script>';
+//         }
+//     } else {
 
-        if ($typing->getParticipantDetail($contest_id, $session_id, "finish_status") == "played") {
-            echo '<script>
-   
-            alert("You already played this contest");
-            </script>';
-        }
-    }
-} else {
-    echo '<script>
-    alert("Contest has ended");
-    </script>';
-}
+//         if ($typing->getParticipantDetail($contest_id, $session_id, "finish_status") == "played") {
+//             echo '<script>
+
+//             alert("You already played this contest");
+//             </script>';
+//         }
+//     }
+// } else {
+//     echo '<script>
+//     alert("Contest has ended");
+
+//     </script>';
+// }
 
 
 
@@ -83,6 +84,43 @@ if ($typing->getDetail($contest_id, "status") != "Ended") {
 
 <body>
 
+    <!--=== contest ended overlay start ===-->
+    <div class="contest-ended-overlay-container"></div>
+    <!--=== contest ended overlay start ===-->
+
+    <!--=== contest played overlay start ===-->
+    <div class="contest-played-overlay-container">
+        <div class="message-container">
+            You've finished playing this contest. Kindly wait for this contest to close to Check results
+        </div>
+    </div>
+    <!--=== contest played overlay start ===-->
+
+    <!--=== contest insufficient fund overlay start ===-->
+    <div class="contest-insufficient-fund-overlay-container">
+        <div class="message-container">
+            Sorry, you dont have sufficient coins to partake in this contest!
+            <div class="centered-div">
+                <button class="btn btn-danger">Buy Coins</button>
+            </div>
+        </div>
+    </div>
+    <!--=== contest insufficient fund overlay start ===-->
+
+
+
+    <!--=== contest start overlay start ===-->
+    <div class="contest-start-overlay-container">
+        <div class="message-container">
+            Click the "START" button to begin contest
+            <div class="centered-div">
+                <button class="btn btn-primary start-btn">START</button>
+            </div>
+        </div>
+    </div>
+    <!--=== conteststart overlay start ===-->
+
+
     <?php
 
 
@@ -91,106 +129,70 @@ if ($typing->getDetail($contest_id, "status") != "Ended") {
     <!-- main contest container start -->
     <div class="main-contest-container">
 
-        <input type="text" class="contest-id" value="<?php echo $contest_id ?>">
+        <input type="text" class="contest-id" value="<?php echo $contest_id ?>" style="display:none;">
+        <input type="text" class="sentence-value" style="display:none;">
 
-
-
-
-        <!-- contest sentence count start -->
-        <div class="contest-sentence-count-container">
-            <span class="contest-sentence-count-text"></span>/<span>4</span>
+        <!--=== time container start ===--->
+        <div class="time-container">
+            <span class="minutes">0</span>:<span class="seconds">00</span>
         </div>
-        <!-- contest sentence count end -->
+                 <!--===time container end===--->
 
-        <!-- question container start-->
-        <div class="sentence-container"><span class="sentence-text">This is the sentence</span></div>
-        <!-- question container end-->
+                    <!-- contest sentence count start -->
+                    <div class="contest-sentence-count-container">
+                        <span class="contest-sentence-count-text"></span>/<span>4</span>
+                    </div>
+                    <!-- contest sentence count end -->
 
-        <input type="text" class="sentence-value">
+                    <!-- question container start-->
+                    <div class="sentence-container"><span class="sentence-text">This is the sentence</span></div>
+                    <!-- question container end-->
 
 
 
 
 
-        <!-- typing container start -->
-        <div class="typing-container">
-            <div class="next-btn-container">
-                <button class="next-btn" style="display:;">Next <i class="fa fa-arrow-double-right"></i></button>
-            </div>
-            <textarea name="" id="" class="typing-area" placeholder="Type here.."></textarea>
+
+
+                    <!-- typing container start -->
+                    <div class="typing-container">
+                        <div class="next-btn-container">
+                            <button class="next-btn" style="display:;">Next <i class="fa fa-arrow-double-right"></i></button>
+                        </div>
+                        <textarea name="" id="" class="typing-area" placeholder="Type here.."></textarea>
+                    </div>
+                    <!-- typing container end -->
+
+
         </div>
-        <!-- typing container end -->
+        <!-- main contest container end -->
 
-
-    </div>
-    <!-- main contest container end -->
-
-    <!--====== Javascripts & Jquery ======-->
-    <script src="../../js/jquery-3.2.1.min.js"></script>
-    <script src="../../js/bootstrap.min.js"></script>
-    <script src="../../js/jquery.slicknav.min.js"></script>
-    <script src="../../js/owl.carousel.min.js"></script>
-    <script src="../../js/mixitup.min.js"></script>
-    <script src="../../js/main.js"></script>
-    <script src="../../js/mymain.js"></script>
-    <script src="js/timer.js"></script>
+        <!--====== Javascripts & Jquery ======-->
+        <script src="../../js/jquery-3.2.1.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/jquery.slicknav.min.js"></script>
+        <script src="../../js/owl.carousel.min.js"></script>
+        <script src="../../js/mixitup.min.js"></script>
+        <script src="../../js/main.js"></script>
+        <script src="../../js/mymain.js"></script>
+        <script src="js/timer.js"></script>
 
 
 
 
 
 
-    <script>
-        // timer 
-        var count_up = new CountUpTimer();
-        count_up.start(0);
+        <script>
 
-        var contest_sentences;
-        var contest_sentence_count = 0;
-
-        var sentence;
-        var typing_field;
-
-        var next_btn = document.querySelector(".next-btn");
+          
+            $(".start-btn").click(function() {
+                start_game();
+                $(".contest-start-overlay-container").hide();
+            })
 
 
-
-        function disable_next() {
-            next_btn.disabled = true;
-            next_btn.style.backgroundColor = "#eee";
-            next_btn.style.border = "1px solid grey";
-            next_btn.style.color = "grey";
-
-        }
-
-        function enable_next() {
-            next_btn.disabled = false;
-            next_btn.style.backgroundColor = "mediumseagreen";
-            next_btn.style.border = "1px solid lightgreen";
-            next_btn.style.color = "white";
-        }
-
-
-
-        function end_game() {
-            count_up.stop();
-            var finished_time = count_up.get_seconds();
-            mark_user_has_played_contest();
-            alert("Contest has ended in " + finished_time)
-        }
-
-        // typing area
-        $(".typing-area").keyup(function() {
-            field = $(this).val();
-            sentence = $(".sentence-value").val();
-
-            if (field == sentence) {
-                enable_next();
-            } else {
-                disable_next();
-            }
-
-        });
+            // start game start
+            function start_game() {
 
 
 
@@ -198,109 +200,235 @@ if ($typing->getDetail($contest_id, "status") != "Ended") {
 
 
 
+                var contest_has_finished = false;
 
 
-        // next btn
-        $(".next-btn").click(function() {
+                // timer 
+                var count_up = new CountUpTimer(".minutes", ".seconds");
+                count_up.start(0);
 
-            if (contest_sentence_count >= 3) {
-                end_game();
-            } else {
-                $(".sentence-text").html(contest_sentences[contest_sentence_count]);
-                $(".sentence-value").val(contest_sentences[contest_sentence_count]);
-                $(".contest-sentence-count-text").html(contest_sentence_count);
-                contest_sentence_count++;
+                var contest_sentences;
+                var contest_sentence_count = 0;
 
-                disable_next();
-                $(".typing-area").val("");
-            }
+                var sentence;
+                var typing_field;
 
-        });
+                var next_btn = document.querySelector(".next-btn");
 
 
 
+                function disable_next() {
+                    next_btn.disabled = true;
+                    next_btn.style.backgroundColor = "#eee";
+                    next_btn.style.border = "1px solid grey";
+                    next_btn.style.color = "grey";
 
-        // get sentences
-        var get_sentence = "yes";
-        var contest_id = $(".contest-id").val();
-        var sentence_array = [];
-        $.ajax({
+                }
 
-            url: "ajax-typing-contest.php",
-            method: "POST",
-            async: false,
-            data: {
-                "get_sentence": get_sentence,
-                "contest_id": contest_id
-            },
-            success: function(data) {
-                contest_sentences = JSON.parse(data);
-                $(".sentence-text").html(contest_sentences[contest_sentence_count]);
-                $(".sentence-value").val(contest_sentences[contest_sentence_count]);
-                $(".contest-sentence-count-text").html(contest_sentence_count);
-                contest_sentence_count++;
-                disable_next();
-
-            }
-
-        });
-    </script>
+                function enable_next() {
+                    next_btn.disabled = false;
+                    next_btn.style.backgroundColor = "mediumseagreen";
+                    next_btn.style.border = "1px solid lightgreen";
+                    next_btn.style.color = "white";
+                }
 
 
-    <script>
-        function update_database_finish_time() {
-            var finish_interval = setInterval(function() {
-                var update_user_finish_time_count = "yes";
+
+                function end_game() {
+                    count_up.stop();
+                    var finished_time = count_up.get_seconds();
+                    mark_user_has_played_contest();
+                    alert("Contest has ended in " + finished_time)
+                }
+
+                // typing area
+                $(".typing-area").keyup(function() {
+                    field = $(this).val();
+                    sentence = $(".sentence-value").val();
+
+                    if (field == sentence) {
+                        enable_next();
+                    } else {
+                        disable_next();
+                    }
+
+                });
+
+
+
+
+
+
+
+
+
+                // next btn
+                $(".next-btn").click(function() {
+
+                    if (contest_sentence_count >= 3) {
+                        end_game();
+                    } else {
+                        $(".sentence-text").html(contest_sentences[contest_sentence_count]);
+                        $(".sentence-value").val(contest_sentences[contest_sentence_count]);
+                        $(".contest-sentence-count-text").html(contest_sentence_count);
+                        contest_sentence_count++;
+
+                        disable_next();
+                        $(".typing-area").val("");
+                    }
+
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // get sentences
+                var get_sentence = "yes";
                 var contest_id = $(".contest-id").val();
-                var finish_time = count_up.get_seconds();
+                var sentence_array = [];
                 $.ajax({
 
                     url: "ajax-typing-contest.php",
                     method: "POST",
                     async: false,
                     data: {
-                        "update_user_finish_time_count": update_user_finish_time_count,
-                        "contest_id": contest_id,
-                        "finish_time": finish_time
+                        "get_sentence": get_sentence,
+                        "contest_id": contest_id
                     },
                     success: function(data) {
-                        // alert("ya")
+                        contest_sentences = JSON.parse(data);
+                        $(".sentence-text").html(contest_sentences[contest_sentence_count]);
+                        $(".sentence-value").val(contest_sentences[contest_sentence_count]);
+                        $(".contest-sentence-count-text").html(contest_sentence_count);
+                        contest_sentence_count++;
+                        disable_next();
+
                     }
 
                 });
 
-                if (contest_has_finished == true) {
-                    clearInterval(finish_interval);
+                function update_database_finish_time() {
+                    var finish_interval = setInterval(function() {
+                        var update_user_finish_time_count = "yes";
+                        var contest_id = $(".contest-id").val();
+                        var finish_time = count_up.get_seconds();
+                        $.ajax({
+
+                            url: "ajax-typing-contest.php",
+                            method: "POST",
+                            async: false,
+                            data: {
+                                "update_user_finish_time_count": update_user_finish_time_count,
+                                "contest_id": contest_id,
+                                "finish_time": finish_time
+                            },
+                            success: function(data) {
+                                // alert("ya")
+                            }
+
+                        });
+
+                        if (contest_has_finished == true) {
+                            clearInterval(finish_interval);
+                        }
+
+
+                    }, 500);
+
                 }
 
+                function mark_user_has_played_contest() {
+                    var contest_id = $(".contest-id").val();
+                    var mark_user_has_played_contest = "yes";
+                    $.ajax({
 
-            }, 500);
+                        url: "ajax-typing-contest.php",
+                        method: "POST",
+                        async: false,
+                        data: {
+                            "mark_user_has_played_contest": mark_user_has_played_contest,
+                            "contest_id": contest_id,
+                        },
+                        success: function(data) {
+                            // alert("You have played this contest");
+                        }
 
-        }
+                    });
 
-        function mark_user_has_played_contest() {
-            var contest_id = $(".contest-id").val();
-            var mark_user_has_played_contest = "yes";
-            $.ajax({
-
-                url: "ajax-typing-contest.php",
-                method: "POST",
-                async: false,
-                data: {
-                    "mark_user_has_played_contest": mark_user_has_played_contest,
-                    "contest_id": contest_id,
-                },
-                success: function(data) {
-                    // alert("You have played this contest");
                 }
 
-            });
+                update_database_finish_time();
 
+
+
+            }
+        </script>
+
+
+
+
+
+
+
+
+
+        <?php
+
+        if ($typing->getDetail($contest_id, "status") != "Ended") {
+            if (!$typing->userIsInContest($contest_id, $session_id)) {
+                if ($typing->getNumParticipants($contest_id) < $typing->max_participants) {
+                    $coin_price = $typing->getContestCoinPrice($contest_id);
+                    if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
+                        $typing->addParticipant($contest_id, $session_id);
+                        $user->updateUserDetail($session_id, "coins", $coin_price, "-");
+                        $activity->createAtivity($session_id, "contest", "typing_contest", $contest_id);
+                        echo '<script>
+                    $(".contest-start-overlay-container").show();
+    </script>';
+                    } else {
+                        echo '<script>
+                    $(".contest-insufficient-fund-overlay-container").show();
+    </script>';
+                    }
+                } else {
+                    echo '<script>
+                $(".contest-full-overlay-container").show();
+    </script>';
+                }
+            } else {
+
+                if ($typing->getParticipantDetail($contest_id, $session_id, "finish_status") == "played") {
+                    echo '<script>
+   
+                $(".contest-played-overlay-container").show();
+            </script>';
+                } else {
+                    echo '<script>
+   
+                $(".contest-start-overlay-container").show();
+            </script>';
+                }
+            }
+        } else {
+            echo '<script>
+   
+    $(".contest-ended-overlay-container").show();
+    
+    </script>';
         }
 
-        update_database_finish_time();
-    </script>
 
+        ?>
 </body>
 
 </html>

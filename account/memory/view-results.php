@@ -58,6 +58,7 @@ include '../../classes/activities.class.php';
     <link rel="stylesheet" href="../../css/style.css" />
     <link rel="stylesheet" href="../../css/mystyle.css" />
 
+    <link rel="stylesheet" href="css/style.css" />
 
 </head>
 
@@ -69,20 +70,154 @@ include '../../classes/activities.class.php';
     <?php
     $contest_id = $_GET['contest_id'];
     $user = new User();
+    $memory = new MemoryContest();
+
+    if ($memory->getDetail($contest_id, "status") != "Ended") {
+        echo '<script>
+    alert("This contest has not ended");
+    </script>';
+    }
+
 
     $result = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id';");
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $userid = $row['userid'];
-        $won = $row['won'];
-        if ($won == "yes") {
-            echo "Name: " . $user->getUserDetail($userid, "name") . " <span>&#8358</span>" . $row['amount_won'] . " WINNER <br>";
-        } else {
-            echo "Name: " . $user->getUserDetail($userid, "name") . " <span>&#8358</span>" . $row['amount_won'] . "<br>";
-        }
-    }
-
     ?>
+
+
+    <!--=== results container start ===--->
+    <div class="results-container">
+        <div class="results-icon-box">
+            <img src="../../img/icons/trophy1.png" alt="" class="icon">
+        </div>
+        <?php
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $userid = $row['userid'];
+            $won = $row['won'];
+            $firstname = $user->getUserDetail($userid, "firstname");
+            $lastname = $user->getUserDetail($userid, "lastname");
+            if ($won == "yes") {
+        ?>
+
+                <div class="results-box active">
+                    <div class="left">
+                        <img src="../img/artist.jpg" alt="" class="img">
+                    </div>
+                    <div class="middle">
+                        <?php echo $firstname . " " . $lastname; ?>
+                        <button class="won">won <span>&#8358</span><?php echo $row['amount_won']; ?></button>
+                        <span class="time active"><?php echo $row['finish_time']; ?></span>
+                    </div>
+                    <div class="right">
+                        <button><img src="../../img/icons/trophy.png" class="icon"></button>
+                    </div>
+                </div>
+
+            <?php
+            } else {
+
+            ?>
+
+
+                <div class="results-box">
+                    <div class="left">
+                        <img src="../img/artist.jpg" alt="" class="img">
+                    </div>
+                    <div class="middle">
+                        <?php echo $firstname . " " . $lastname; ?>
+                        <span class="time"><?php echo $row['finish_time']; ?></span>
+                    </div>
+                    <div class="right">
+
+                    </div>
+                </div>
+
+
+
+
+        <?php
+            }
+        }
+
+        ?>
+    </div>
+    <!--=== results container end ===--->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--=== results container start ===--->
+    <!-- <div class="results-container">
+
+
+            <div class="results-icon-box">
+                <img src="../../img/icons/trophy1.png" alt="" class="icon">
+            </div>
+
+            <div class="results-box">
+                <div class="left">
+                    <img src="../img/artist.jpg" alt="" class="img">
+                </div>
+                <div class="middle">
+                    Emmy Danjumbo
+                    <span class="time">25 seconds</span>
+                </div>
+                <div class="right">
+
+                </div>
+            </div>
+
+
+
+
+            <div class="results-box active">
+                <div class="left">
+                    <img src="../img/artist.jpg" alt="" class="img">
+                </div>
+                <div class="middle">
+                    Emmy Danjumbo
+                    <button class="won">won <span>&#8358</span>450</button>
+                    <span class="time active">25 seconds</span>
+                </div>
+                <div class="right">
+                    <button><img src="../../img/icons/trophy.png" class="icon"></button>
+                </div>
+            </div>
+
+
+            <div class="results-box">
+                <div class="left">
+                    <img src="../img/artist.jpg" alt="" class="img">
+                </div>
+                <div class="middle">
+                    Emmy Danjumbo
+                    <span class="time">25 seconds</span>
+                </div>
+                <div class="right">
+
+                </div>
+            </div>
+
+
+        </div> -->
+    <!--=== results container end ===--->
+
+
+
     <!--====== Javascripts & Jquery ======-->
     <script src="../../js/jquery-3.2.1.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
@@ -95,7 +230,7 @@ include '../../classes/activities.class.php';
 
 
     <script>
-
+        var name = false;
     </script>
 
 </body>

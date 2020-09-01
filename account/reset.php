@@ -141,7 +141,7 @@ $typing = new TypingContest();
 //$memory->checkResults();
 
 
-//$user->createUser("James", "james@gmail.com", "07026712617", "1234");
+//$user->createUser("Precious", "Paul", "precious@gmail.com", "070267272627", "1234");
 
 //$activity->addToWinnerHistory('5ef9e0bba9cbe', '400', 'memory_contest');
 //$user->setUserDetail("5efa668ebd5c6", "coins", "400");
@@ -173,6 +173,32 @@ $typing = new TypingContest();
 //$typing->createChallenge("5ef9e0bba9cbe", "200", "2", "5", "public");
 //$memory->checkChallengeResults();
 
-//$typing->createContest("Silver");
+//$typing->createContest("Gold");
 //$typing->checkResults();
 //$typing->checkChallengeResults();
+
+
+//echo $memory->getParticipantDetail("5f1a05a20cbe5", "5ef9e0bba9cbe", "finish_time");
+//$memory->checkResults();
+
+//echo $memory->getDetail("5f3cf8f5829b8", "status");
+
+//$admin->createCoupon(300);
+
+// if ($admin->couponIsValid("2Z4EPK721W")) {
+//     echo "yes";
+// } else {
+//     echo "no";
+// }
+
+//$typing->checkResults();
+
+//$admin->createCashWithdrawal("sdgjhDBJhd", "500", "Emmanuel", "22116617839", "savings", "UBA");
+//$admin->createAirtimeWithdrawal("duhfakjsdhkaj", "200", "MTN", "08801268919");
+// $time = $db->format_contest_time(120);
+// echo $time['time'] . " " . $time['time_frame'] . " " . $time['suffix'];
+
+
+//$typing->checkResults();
+//$admin->createFreeAirtimeWithdrawal("dskjdnkjsd", "150", "08012781278");
+//$admin->addTransaction("shdgsdkj", "deposit", "Online", "500");

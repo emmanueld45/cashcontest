@@ -1,3 +1,23 @@
+<?php
+
+session_start();
+include '../../classes/database.class.php';
+include '../../classes/typing_contest.class.php';
+include '../../classes/memory_contest.class.php';
+include '../../classes/users.class.php';
+include '../../classes/activities.class.php';
+include '../../classes/admin.class.php';
+
+
+$typing = new TypingContest();
+$memory = new memoryContest();
+$activity = new Activity();
+$admin = new Admin();
+$user = new User();
+
+$session_id = $_SESSION['id'];
+?>
+
 <!-- Konva Wheel of Fortuneview raw -->
 <!DOCTYPE html>
 <html>
@@ -5,73 +25,281 @@
 <head>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f0f0f0;
+        /** start of  smaller screen*/
+        @media only screen and (max-width: 690px) {
+
+
+            .overlay-container {
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+            }
+
+
+            .overlay-container .box {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+            }
+
+            .overlay-container .box .centered-div .icon {
+                width: 100px;
+                height: 100px;
+                margin-top: 20%;
+                margin-bottom: 20px;
+            }
+
+            .overlay-container .box .message {
+                width: 100%;
+                position: relative;
+                text-align: center;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #08192d;
+
+            }
+
+            .intro-container {
+                background: radial-gradient(#08192d, #08192d);
+                width: 100%;
+                height: 100vh;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+
+
+            }
+
+            .info-container {
+                width: 100%;
+                text-align: center;
+                padding: 0px;
+                font-weight: bold;
+                font-size: 30px;
+                margin-top: 100px;
+                color: white;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+                margin-top: 150px;
+                margin-bottom: 20px;
+
+            }
+
+
+            .start-btn {
+                padding: 10px;
+                border: none;
+                background-color: orange;
+                color: black;
+                border-radius: 100px;
+                box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.4);
+                font-weight: bold;
+                width: 200px;
+                font-size: 20px !important;
+                cursor: pointer;
+            }
+
+            .centered-div {
+                display: flex;
+                width: 100%;
+                justify-content: center;
+            }
+
         }
 
-        .intro-container {
-            background: radial-gradient(lightgreen, green);
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            top: 0px;
-            left: 0px;
+        /******** End of smaller screen ***************** */
+        /***************************************** start of bigger screen********************************************/
+        @media only screen and (min-width: 690px) {
 
+            .overlay-container {
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+            }
+
+
+            .overlay-container .box {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+            }
+
+            .overlay-container .box .centered-div .icon {
+                width: 100px;
+                height: 100px;
+                margin-top: 7%;
+                margin-bottom: 20px;
+            }
+
+            .overlay-container .box .message {
+                width: 100%;
+                position: relative;
+                text-align: center;
+                font-size: 18px;
+            }
+
+            .overlay-container .box .message p {
+                font-size: 20px;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #08192d;
+
+            }
+
+            .intro-container {
+                background: radial-gradient(#08192d, #08192d);
+                width: 100%;
+                height: 100vh;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+
+
+            }
+
+            .info-container {
+                width: 100%;
+                text-align: center;
+                padding: 0px;
+                font-weight: bold;
+                font-size: 30px;
+                margin-top: 100px;
+                color: white;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+                margin-top: 150px;
+                margin-bottom: 20px;
+
+            }
+
+
+            .start-btn {
+                padding: 10px;
+                border: none;
+                background-color: orange;
+                color: black;
+                border-radius: 100px;
+                box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.4);
+                font-weight: bold;
+                width: 200px;
+                font-size: 20px !important;
+                cursor: pointer;
+            }
+
+            .centered-div {
+                display: flex;
+                width: 100%;
+                justify-content: center;
+            }
         }
 
-        .info-container {
-            width: 100%;
-            text-align: center;
-            padding: 0px;
-            font-weight: bold;
-            font-size: 30px;
-            margin-top: 100px;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-            margin-top: 150px;
-            margin-bottom: 20px;
-
-        }
-
-
-        .start-btn {
-            padding: 10px;
-            border: none;
-            background-color: orange;
-            color: black;
-            border-radius: 100px;
-            box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.4);
-            font-weight: bold;
-            width: 200px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .centered-div {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-        }
+        /**************************** end of bigger screen ***************** */
     </style>
     <script src="https://unpkg.com/konva@7.0.2/konva.min.js"></script>
     <meta charset="utf-8" />
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Konva Wheel of Fortune Demo</title>
+    <!-- Favicon -->
+    <link href="../img/favicon.ico" rel="shortcut icon" />
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="../css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="../css/slicknav.min.css" />
+
+    <!-- Main Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/mystyle.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <title>Win Wheel</title>
 
 </head>
 
 <body>
 
-    <div class="intro-container">
-        <div class="info-container"> CLICK THE "START" BUTTON TO SPIN THE WHEEL</div>
+    <div class="intro-container" style="display:;">
+        <div class="info-container"> CLICK THE "SPIN" BUTTON TO SPIN THE WHEEL</div>
         <br>
         <div class="centered-div">
-            <button class="start-btn" onclick="start()">START WHEEL</button>
+            <button class="start-btn site-btn" onclick="start()">SPIN WHEEL</button>
+        </div>
+    </div>
+
+
+
+    <div class="overlay-container win-modal" style="display:none;">
+        <div class="box">
+            <div class="centered-div">
+                <img src="../img/goodsign1.png" class="icon" alt="icon">
+            </div>
+            <div class="message">
+                <p style="color:mediumseagreen;font-weight:bold;">Congratulations!</p>
+                You won <span style="color:mediumseagreen;font-weight:bold;">&#8358</span><span class="amount-won" style="color:mediumseagreen;font-weight:bold;">80</span>
+            </div>
+            <br>
+            <div class="centered-div">
+                <span onclick="go_back()" style="color:grey;border-bottom:1px dotted grey;cursor:pointer;">close <i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="overlay-container lose-modal" style="display:none;">
+        <div class="box">
+            <div class="centered-div">
+                <img src="../img/sad.png" class="icon" alt="icon">
+            </div>
+            <div class="message">
+                <p style="color:red;font-weight:bold;">Bad Luck, you lose!</p>
+                <span>Try back tomorrow</span>
+            </div>
+            <br>
+            <div class="centered-div">
+                <span onclick="go_back()" style="color:grey;border-bottom:1px dotted grey;cursor:pointer;">close <i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay-container played-modal" style="display:none;">
+        <div class="box">
+            <div class="centered-div">
+                <img src="../img/played.png" class="icon" alt="icon">
+            </div>
+            <div class="message">
+                <p style="color:royalblue;font-weight:bold;">You have already played for today!</p>
+                <span>Try back tomorrow</span>
+            </div>
+            <br>
+            <div class="centered-div">
+                <span onclick="go_back()" style="color:grey;border-bottom:1px dotted grey;cursor:pointer;">close <i class="fa fa-times"></i></span>
+            </div>
         </div>
     </div>
 
@@ -80,27 +308,55 @@
 
 
 
+    <div class="overlay-container inactive-modal" style="display:none;">
+        <div class="box">
+            <div class="centered-div">
+                <img src="../img/close.png" class="icon" alt="icon">
+            </div>
+            <div class="message">
+                <p style="color:red;font-weight:bold;">Free Airtime giveaway is not active right now!</p>
+                <span>Check back later</span>
+            </div>
+            <br>
+            <div class="centered-div">
+                <span onclick="go_back()" style="color:grey;border-bottom:1px dotted grey;cursor:pointer;">close <i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
 
 
 
 
-    <div style="width:100%;display:flex;justify-content:center;background:radial-gradient(white, green);">
+
+    <div style="width:100%;display:flex;justify-content:center;background:;">
         <div id="container"></div>
     </div>
 
     <div class="close-display" style="position:fixed;top:0px;left:0px;width:100%;background-color:brown;height:100%;z-index:2000;display:none;"></div>
 
 
+
+
+
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.slicknav.min.js"></script>
+    <script src="../js/owl.carousel.min.js"></script>
+    <script src="../js/mixitup.min.js"></script>
+    <script src="../js/main.js"></script>
+
     <script>
         var close_display = document.querySelector(".close-display");
         var intro_container = document.querySelector(".intro-container");
 
-        var data = ["5", "20", "30", "100", "10", "50", "60", "15", "40", "8", "7", "35", "80"];
+        var data = ["Null", 20, 30, 90, 100, 50, 60, 150, "Null", 200, 7, "Null", 80];
+
+        //  start();
 
         function start() {
             // hide into container as game starts
-            intro_container.style.display = "none";
-
+            $(".intro-container").slideUp();
             var width = window.innerWidth;
             var height = window.innerHeight;
             // var width = 300;
@@ -240,8 +496,15 @@
                         if (shape) {
                             var text = shape.getParent().findOne('Text').text();
                             var price = text.split('\n').join('');
-                            alert('You won N' + price);
-                            //  close_display.style.display = "block";
+                            //  alert('You won N' + price);
+                            if (price != "Null") {
+                                $(".win-modal").fadeIn();
+                                $(".amount-won").html(price);
+                                fund_airtime(price, "won");
+                            } else if (price == "Null") {
+                                $(".lose-modal").fadeIn();
+                                fund_airtime(0, "lose");
+                            }
                         }
                         finished = true;
                     }
@@ -365,6 +628,60 @@
 
         }
     </script>
+
+    <?php
+
+    if ($admin->getAdminDetail("free_airtime_status") == "on") {
+
+        if ($admin->getAdminDetail("airtime_balance") > 200) {
+            if (!isset($_COOKIE['winwheel_played'])) {
+                echo '<script>
+    $(".intro-container").show();
+    </script>';
+            } else {
+                echo '<script>
+                    $(".played-modal").show();
+                    </script>';
+            }
+        } else {
+            echo '<script>
+            $(".inactive-modal").show();
+            </script>';
+        }
+    } else {
+        echo '<script>
+            $(".inactive-modal").show();
+            </script>';
+    }
+
+    ?>
+
+
+    <script>
+        function fund_airtime(amount, status) {
+            var free_airtime = "yes";
+            $.ajax({
+
+                url: "ajax-winwheel-script.php",
+                method: "POST",
+                async: false,
+                data: {
+                    "free_airtime": free_airtime,
+                    "amount": amount,
+                    "status": status
+                },
+                success: function(data) {
+                    $(".contests-container").html(data);
+                }
+
+            });
+
+        }
+    </script>
+
+
+
+
 </body>
 
 </html>

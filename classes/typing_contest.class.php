@@ -13,7 +13,7 @@ class TypingContest
     public $gold_coin_price = 100;
     public $diamond_coin_price = 200;
 
-    public $max_participants = 5;
+    public $max_participants = 4;
     public $min_participants = 1;
 
 
@@ -74,7 +74,7 @@ class TypingContest
 
         $result = $alph . $nums;
         $final_result = str_shuffle($result);
-        return $final_result;
+        return "#" . $final_result;
     }
 
     public function createContest($contest_category)
@@ -89,7 +89,7 @@ class TypingContest
         $date = date("d-m-y");
 
         $this->start_time = time();
-        $this->end_time = 120;
+        $this->end_time = $this->start_time + 360;
         $have_results = "no";
 
         $result = $db->setQuery("INSERT INTO typing_contest (contest_id, contest_code, contest_image, contest_category, status, time, date, start_time, end_time, have_results) VALUES('$contest_id', '$contest_code', '$contest_image', '$contest_category', '$status', '$time', '$date', '$this->start_time', '$this->end_time', '$have_results');");
@@ -118,6 +118,29 @@ class TypingContest
     }
 
 
+
+
+    public function updateDetail($contest_id, $detail, $value, $op)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM typing_contest WHERE contest_id='$contest_id';");
+        $row = mysqli_fetch_assoc($result);
+        $old_value = $row[$detail];
+
+        if ($op == "+") {
+            $new_value = $old_value + $value;
+        } else if ($op == "-") {
+            $new_value = $old_value - $value;
+        }
+
+        $result1 = $db->setQuery("UPDATE typing_contest SET $detail='$new_value' WHERE contest_id='$contest_id';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
@@ -229,7 +252,7 @@ class TypingContest
         } else if ($contest_category == "Gold") {
             return $this->gold_coin_price;
         } else if ($contest_category == "Diamond") {
-            return $this->diamond_coin_psrice;
+            return $this->diamond_coin_price;
         }
     }
 
@@ -286,6 +309,40 @@ class TypingContest
 
 
 
+    public function userHavePlayedContest($contest_id, $userid)
+    {
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM typing_contest_participants WHERE contest_id='$contest_id' AND userid='$userid';");
+        $row = mysqli_fetch_assoc($result);
+        $numrows = mysqli_num_rows($result);
+        if ($numrows > 0) {
+            $finish_status = $row['finish_status'];
+            if ($finish_status == "played") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public function reduceEndTime()
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM typing_contest WHERE have_results='no';");
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $contest_id = $row['contest_id'];
+
+            $this->updateDetail($contest_id, "end_time", "1", "-");
+        }
+    }
 
 
     public function checkResults()
@@ -294,7 +351,7 @@ class TypingContest
         $user = new User();
         $admin = new Admin();
 
-        $result = $db->setQuery("SELECT * FROM typing_contest WHERE have_results='no';");
+        $result = $db->setQuery("SELECT * FROM typing_contest WHERE have_results='no' AND status='Ended';");
         while ($row = mysqli_fetch_assoc($result)) {
             $contest_id = $row['contest_id'];
             $finish_time_array = [];
@@ -623,6 +680,22 @@ class TypingContest
     }
 
 
+
+
+
+    public function reduceChallengeEndTime()
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM typing_challenge WHERE have_results='no';");
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $challenge_id = $row['challenge_id'];
+
+            $this->updateChallengeDetail($challenge_id, "end_time", "1", "-");
+        }
+    }
 
 
 

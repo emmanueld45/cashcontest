@@ -64,4 +64,156 @@ class Admin
             return false;
         }
     }
+
+
+    public function createCoupon($coin_price)
+    {
+
+        global $db;
+
+        $alph = str_shuffle("ABCDEFGHIJKLMNPQRSTUVWXYZ");
+        $nums = str_shuffle("123456789123456789");
+        if (strlen($alph) > 5) {
+            $cutalph = substr($alph, 0, 5);
+
+            $alph = $cutalph;
+        }
+
+        if (strlen($nums) > 5) {
+            $cutnums = substr($nums, 0, 5);
+
+            $nums = $cutnums;
+        }
+
+        $result = $alph . $nums;
+        $code = str_shuffle($result);
+
+        $status = "unused";
+
+        $result = $db->setQuery("INSERT INTO coupons (code, coin_price, status) VALUES ('$code', '$coin_price', '$status');");
+    }
+
+
+
+    public function couponIsValid($coupon)
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM coupons WHERE code='$coupon';");
+        $numrows = mysqli_num_rows($result);
+
+        if ($numrows != 0) {
+
+            $row = mysqli_fetch_assoc($result);
+            if ($row['status'] == "unused") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public function getCouponCoinPrice($coupon)
+    {
+
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM coupons WHERE code='$coupon';");
+        $row = mysqli_fetch_assoc($result);
+
+        return $row['coin_price'];
+    }
+
+
+
+    public function markCouponAsUsed($coupon)
+    {
+
+        global $db;
+
+        $result = $db->setQuery("UPDATE coupons SET status='used' WHERE code='$coupon';");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function createCashWithdrawal($user_id, $amount, $account_name, $account_number, $account_type, $bank_name)
+    {
+        global $db;
+
+        $status = "unsettled";
+        $time = time();
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO cash_withdrawals (userid, amount, account_name, account_number, account_type, bank_name, status, time, date) VALUES ('$user_id', '$amount', '$account_name', '$account_number', '$account_type', '$bank_name', '$status', '$time', '$date');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function createAirtimeWithdrawal($user_id, $amount, $network, $phone)
+    {
+        global $db;
+
+        $status = "unsettled";
+        $time = time();
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO airtime_withdrawals (userid, amount, network, phone, status, time, date) VALUES ('$user_id', '$amount', '$network', '$phone', '$status', '$time', '$date');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function createFreeAirtimeWithdrawal($user_id, $amount, $phone)
+    {
+        global $db;
+
+        $status = "unsettled";
+        $time = time();
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO free_airtime_withdrawals (userid, amount, phone, status, time, date) VALUES ('$user_id', '$amount', '$phone', '$status', '$time', '$date');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public function addTransaction($user_id, $transaction_type, $sub_type, $amount)
+    {
+        global $db;
+
+
+        $a = date("h");
+        $b = $a - 1;
+        $c = date("i A");
+        $time = $b . ":" . $c;
+
+
+        $date = date("d-m-y");
+
+        $result = $db->setQuery("INSERT INTO transactions (userid, transaction_type, sub_type, amount, time, date) VALUES ('$user_id', '$transaction_type', '$sub_type', '$amount', '$time', '$date');");
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
