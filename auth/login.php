@@ -10,7 +10,7 @@ include '../classes/users.class.php';
 
 <head>
   <title>
-    Invest Register Form Flat Responsive Widget Template :: w3layouts
+  Contest
   </title>
   <!-- Meta-Tags -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,15 +47,55 @@ include '../classes/users.class.php';
 
       <div class="content-top-agile">
         <h2 style="position:relative;top:20px;">Login Account</h2>
-        <?php
-        if (isset($_GET['email_phone_incorrect'])) {
-          echo "<div class='alert alert-danger'> Phone/Email you entered is</div>";
-        }
-
-        ?>
+       
       </div>
       <div class="content-bottom">
         <form action="" method="POST">
+        <?php
+        if (isset($_GET['phone_incorrect'])) {
+          echo "<br><br><div class='alert alert-danger' style='padding:10px;background-color:#ff4f81;color:white;border-radius:3px;font-size:14px;'>
+                
+          <b>Sorry, Phone number is incorrect!</b>
+         
+          </div>";
+        }
+
+
+        if (isset($_GET['password_incorrect'])) {
+          echo "<br><br><div class='alert alert-danger' style='padding:10px;background-color:#ff4f81;color:white;border-radius:3px;font-size:14px;'>
+                
+          <b>Sorry, Password is incorrect!</b>
+         
+          </div>";
+        }
+
+
+        if (isset($_GET['live_feed'])) {
+          echo "<br><br><div class='alert alert-info' style='padding:10px;background-color:red;color:white;border-radius:3px;font-size:14px;'>
+                
+          <b>You need to login to view live feeds!</b>
+         
+          </div>";
+        }
+
+        if (isset($_GET['memory_contest'])) {
+          echo "<br><br><div class='alert alert-info' style='padding:10px;background-color:#ff4f81;color:white;border-radius:3px;font-size:14px;'>
+                
+          <b>You need to login or <a href='signup.php'>signup</a> to play any memory contest!</b>
+         
+          </div>";
+        }
+
+
+        if (isset($_GET['typing_contest'])) {
+          echo "<br><br><div class='alert alert-info' style='padding:10px;background-color:#ff4f81;color:white;border-radius:3px;font-size:14px;'>
+                
+          <b>You need to login or <a href='signup.php'>signup</a> to play any typing contest!</b>
+         
+          </div>";
+        }
+
+        ?>
           <i class="fab fa-centercode"></i>
           <div class="field_w3ls">
             <!-- <div class="field-group">
@@ -63,7 +103,7 @@ include '../classes/users.class.php';
             </div> -->
 
             <div class="field-group">
-              <input name="email_phone" id="email" type="text" value="" placeholder="Phone or Email" required />
+              <input name="phone" id="email" type="tel" value="" placeholder="Phone Number" required />
             </div>
             <div class="field-group">
               <input id="password-field" type="password" class="form-control" name="password" value="" placeholder="Password" />
@@ -100,10 +140,10 @@ include '../classes/users.class.php';
   if (isset($_POST['submit'])) {
 
 
-    $email_phone = $_POST['email_phone'];
+    $phone = $_POST['phone'];
     $password = $_POST['password'];
 
-    $result = $db->setQuery("SELECT * FROM users WHERE email='$email_phone' OR phone='$email_phone';");
+    $result = $db->setQuery("SELECT * FROM users WHERE  phone='$phone';");
     $numrows = mysqli_num_rows($result);
     $row = mysqli_fetch_assoc($result);
 
@@ -123,7 +163,7 @@ include '../classes/users.class.php';
     </script>';
     } else {
       echo '<script>
-    window.location.href="login.php?email_phone_incorrect=true";
+    window.location.href="login.php?phone_incorrect=true";
     </script>';
     }
   }

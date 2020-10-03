@@ -7,12 +7,12 @@
     </a>
 
 
-    <a href="all-contests.php">
-        <div class="box"><i class="fa fa-diamond stroke-transparent" style="margin-right:20px;opacity:1;"></i> Contests <i class="fa fa-angle-right angle"></i></div>
+    <a href="all-contests">
+        <div class="box"><i class="fa fa-gamepad stroke-transparent" style="margin-right:20px;opacity:1;"></i> Play contest <i class="fa fa-angle-right angle"></i></div>
     </a>
 
 
-    <a href="activities.php">
+    <a href="live-feed">
         <div class="box"><i class="fa fa-feed stroke-transparent" style="margin-right:20px;opacity:1;"></i> Live Feed <i class="fa fa-angle-right angle"></i></div>
     </a>
 

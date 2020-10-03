@@ -216,4 +216,51 @@ class Admin
             return false;
         }
     }
+
+
+    public function sendLiveFeedNotification(){
+        global $db;
+        
+        $result = $db->setQuery("SELECT * FROM users;");
+        $numrows = mysqli_num_rows($result);
+        if($numrows != 0){
+            while($row = mysqli_fetch_assoc($result)){
+                $user_id = $row['uniqueid'];
+                $status = "unseen";
+                $result1 = $db->setQuery("INSERT INTO live_feed_notifications (userid, status) VALUES ('$user_id', '$status');");
+            }
+        }
+    }
+
+    public function markLiveFeedNotificationsAsSeen($user_id){
+        global $db;
+
+        $result = $db->setQuery("SELECT * FROM live_feed_notifications WHERE userid='$user_id';");
+        $numrows = mysqli_num_rows($result);
+        if($numrows != 0){
+            while($row = mysqli_fetch_assoc($result)){
+            $notification_id = $row['id'];
+            $result1 = $db->setQuery("UPDATE live_feed_notifications SET status='seen' WHERE id='$notification_id' AND userid='$user_id';");
+          }
+      }
+
+    }
+
+    public function getNumUnseenLiveFeedNotifications($user_id){
+        global $db;
+        $result = $db->setQuery("SELECT * FROM live_feed_notifications WHERE userid='$user_id' AND status='unseen';");
+        $numrows = mysqli_num_rows($result);
+
+        return $numrows;
+    }
+
+
+    public function goTo($page, $parameter){
+        echo '<script>
+         window.location.href="'.$page.'?'.$parameter.'";
+        </script>';
+   }
 }
+
+
+$admin = new Admin();

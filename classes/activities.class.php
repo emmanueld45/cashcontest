@@ -1,7 +1,7 @@
 <?php
 class Activity
 {
-    public function createAtivity($userid, $type, $sub_type, $data)
+    public function createAtivity($userid, $type, $message, $data)
     {
         global $db;
 
@@ -10,7 +10,7 @@ class Activity
         $status = 0;
 
 
-        $result = $db->setQuery("INSERT INTO activities (userid, type, sub_type, time, date, status, data) VALUES ('$userid', '$type', '$sub_type', '$time', '$date', '$status', '$data');");
+        $result = $db->setQuery("INSERT INTO activities (userid, type, message, time, date, status, data) VALUES ('$userid', '$type', '$message', '$time', '$date', '$status', '$data');");
         if ($result) {
             return true;
         } else {
@@ -77,3 +77,5 @@ class Activity
         }
     }
 }
+
+$activity = new Activity();

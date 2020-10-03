@@ -38,13 +38,38 @@
     font-size: 17px;
     padding-bottom: 0px;
   }
-  .bottom-nav-container span {
+
+  .bottom-nav-container a {
+    color: white;
     position: relative;
-    font-size: 13px;
+    /* opacity: 0; */
+  }
+
+  .bottom-nav-container i {
+    opacity: 0.7;
+  }
+
+  .bottom-nav-container a span {
+    position: relative;
+    font-size: 12px;
     color: white;
     opacity: 0.5;
     top: -5px;
     font-weight: normal;
+  }
+
+  .bottom-nav-container a button {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: crimson;
+    border: none;
+    color: white;
+    font-size: 11px;
+    opacity: 1 !important;
   }
 
   /**** BOTTOM NAV END ****/
@@ -162,7 +187,8 @@
     width: 100%;
     padding: 10px;
     border-top: 1px solid #eee;
-    color: rgb(112, 101, 101);
+    /* color: rgb(112, 101, 101); */
+    color: #333;
   }
 
   .free-airtime-modal {
@@ -446,7 +472,7 @@
     font-size: 16px;
     border: none;
     background-color: #fc0254;
-    box-shadow: inset -2px -4px 6px rgba(0, 0, 0, 0.4);
+    /* box-shadow: inset -2px -4px 6px rgba(0, 0, 0, 0.4); */
     color: white;
     border-radius: 50px;
     float: right;
@@ -544,7 +570,7 @@
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     display: none;
   }
 
@@ -552,6 +578,8 @@
     width: 80%;
     /* height: 200px; */
     background-color: white;
+    margin-top: 50px;
+    height: 200px;
   }
 
   .join-modal .title {
@@ -1236,14 +1264,14 @@
   .join-modal-background {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
     top: 0px;
     left: 0px;
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     display: none;
   }
 
@@ -1251,6 +1279,8 @@
     width: 300px;
     /* height: 200px; */
     background-color: white;
+    margin-top: 50px;
+    height: 220px;
   }
 
   .join-modal .title {

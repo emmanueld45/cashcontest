@@ -1,3 +1,17 @@
+<?php
+
+session_start();
+include '../classes/database.class.php';
+include '../classes/typing_contest.class.php';
+include '../classes/memory_contest.class.php';
+include '../classes/users.class.php';
+include '../classes/activities.class.php';
+include '../classes/admin.class.php';
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -63,7 +77,7 @@
         <div class="main-container-middle all-contests-body">
 
 
-            <div class="all-contests-header"> <i class="fa fa-angle-left fl"></i> Select Contest</div>
+            <div class="all-contests-header"> <i class="fa fa-angle-left fl back-icon" onclick="go_back()"></i> Select Contest</div>
 
             <!--=== all contests container start ===--->
             <div class="all-contests-container">
@@ -174,6 +188,8 @@
 
 
     <!-- Footer section -->
+    <br><br>
+    
 
     <!-- Footer section end -->
 

@@ -1,0 +1,58 @@
+/** start of  smaller screen*/
+@media only screen and (max-width: 690px) {
+  .main-container-left {
+    display: none;
+  }
+
+  .main-container-middle {
+    width: 100%;
+
+    background-color: #eee;
+  }
+
+  .main-container-right {
+    display: none;
+  }
+}
+/*** end of smaller screen ***/
+
+/** start of bigger screen*/
+@media only screen and (min-width: 690px) {
+  .main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-container-left {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 20%;
+    height: 100%;
+    background-color: #0a183d;
+    color: white;
+    overflow-y: auto;
+  }
+
+  .main-container-middle {
+    position: fixed;
+    top: 0px;
+    right: 20%;
+    width: 60%;
+    height: 100%;
+    background-color: white;
+    overflow-y: auto;
+  }
+
+  .main-container-right {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 20%;
+    height: 100%;
+    background-color: #eee;
+    overflow-y: auto;
+  }
+}
+/*** end of bigger screen ***/

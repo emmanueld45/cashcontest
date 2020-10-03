@@ -13,8 +13,8 @@ class TypingContest
     public $gold_coin_price = 100;
     public $diamond_coin_price = 200;
 
-    public $max_participants = 4;
-    public $min_participants = 1;
+    public $max_participants = 5;
+    public $min_participants = 3;
 
 
 
@@ -89,7 +89,7 @@ class TypingContest
         $date = date("d-m-y");
 
         $this->start_time = time();
-        $this->end_time = $this->start_time + 360;
+        $this->end_time = $this->start_time + 600;
         $have_results = "no";
 
         $result = $db->setQuery("INSERT INTO typing_contest (contest_id, contest_code, contest_image, contest_category, status, time, date, start_time, end_time, have_results) VALUES('$contest_id', '$contest_code', '$contest_image', '$contest_category', '$status', '$time', '$date', '$this->start_time', '$this->end_time', '$have_results');");
@@ -350,6 +350,7 @@ class TypingContest
         global $db;
         $user = new User();
         $admin = new Admin();
+        $activity = new Activity();
 
         $result = $db->setQuery("SELECT * FROM typing_contest WHERE have_results='no' AND status='Ended';");
         while ($row = mysqli_fetch_assoc($result)) {
@@ -401,6 +402,9 @@ class TypingContest
                     $user->updateUserDetail($winner_id, "withdrawable_balance", $winner_price, "+");
                     $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $winner_price);
                     $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $winner_price, "typing_contest");
+                    $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
+                    $admin->sendLiveFeedNotification();
                 } else {
 
                     if ($x + 1 == $num_participants) {
@@ -416,6 +420,9 @@ class TypingContest
                         $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
                         $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
                         $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                        $activity->addToWinnerHistory($winner_id, $correct_winner_price, "typing_contest");
+                        $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
+                        $admin->sendLiveFeedNotification();
                     }
                 }
             } else {
@@ -425,9 +432,12 @@ class TypingContest
                 $result2 = $db->setQuery("SELECT * FROM typing_contest_participants WHERE contest_id='$contest_id';");
                 while ($row2 = mysqli_fetch_assoc($result2)) {
                     $winner_id = $row2['userid'];
-                    $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                    $user->updateUserDetail($winner_id, "coins", $correct_winner_price, "+");
                     $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
                     $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $correct_winner_price, "typing_contest");
+                    $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
+                    $admin->sendLiveFeedNotification();
                 }
             }
         }
@@ -704,6 +714,7 @@ class TypingContest
         global $db;
         $user = new User();
         $admin = new Admin();
+        $activity = new Activity();
 
         $result = $db->setQuery("SELECT * FROM typing_challenge WHERE have_results='no';");
         while ($row = mysqli_fetch_assoc($result)) {
@@ -758,6 +769,8 @@ class TypingContest
                     $user->updateUserDetail($winner_id, "withdrawable_balance", $winner_price, "+");
                     $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $winner_price);
                     $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $winner_price, "typing_contest");
+                    $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
                 } else {
 
                     if ($x + 1 == $num_participants) {
@@ -773,6 +786,8 @@ class TypingContest
                         $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
                         $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $correct_winner_price);
                         $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                        $activity->addToWinnerHistory($winner_id, $correct_winner_price, "typing_contest");
+                        $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
                     }
                 }
             } else {
@@ -785,6 +800,8 @@ class TypingContest
                     $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
                     $this->setChallengeParticipantDetail($challenge_id, $winner_id, "amount_won", $correct_winner_price);
                     $this->setChallengeParticipantDetail($challenge_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $correct_winner_price, "typing_contest");
+                    $activity->createAtivity($winner_id, "typing_contest_win", "won a typing contest", $contest_id);
                 }
             }
         }
@@ -792,3 +809,6 @@ class TypingContest
 
     /*** CHALLENGE METHODS END **** */
 }
+
+
+$typing = new TypingContest();

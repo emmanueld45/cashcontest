@@ -103,7 +103,7 @@ $contest_id = $_GET['contest_id'];
                 if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
                     $typing->addParticipant($contest_id, $session_id);
                     $user->updateUserDetail($session_id, "coins", $coin_price, "-");
-                    $activity->createAtivity($session_id, "contest", "typing_contest", $contest_id);
+                    $activity->createAtivity($session_id, "typing_contest", "joined a typing contest", $contest_id);
                     if ($typing->getNumParticipants($contest_id) >= $typing->max_participants) {
                         $typing->createContest($typing->getDetail($contest_id, "contest_category"));
                     }

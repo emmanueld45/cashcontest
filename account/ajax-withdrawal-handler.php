@@ -31,6 +31,8 @@ if (isset($_POST['airtime_withdrawal'])) {
     $result2 = $user->updateUserDetail($session_id, "withdrawable_balance", $amount, "-");
 
     $admin->addTransaction($session_id, "withdrawal", "Airtime", $amount);
+    $activity->createAtivity($session_id, "airtime_withdrawal", "withdrew N$amount airtime", "empty");
+    $admin->sendLiveFeedNotification();
 
     if ($result1 and $result2) {
         $data = array("status" => "success");
@@ -67,6 +69,8 @@ if (isset($_POST['cash_withdrawal'])) {
     $result2 = $user->updateUserDetail($session_id, "withdrawable_balance", $amount, "-");
 
     $admin->addTransaction($session_id, "withdrawal", "Cash", $amount);
+    $activity->createAtivity($session_id, "cash_withdrawal", "withdrew N$amount cash", "empty");
+    $admin->sendLiveFeedNotification();
 
     if ($result1 and $result2) {
         $data = array("status" => "success");

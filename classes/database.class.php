@@ -10,7 +10,7 @@ class Database
 
     public $dbpassword = 'password';
 
-    public $dbname = 'contests7';
+    public $dbname = 'contests10';
 
     public $conn;
 
@@ -29,20 +29,83 @@ class Database
     }
 
 
-    // public function format_time($old_time)
-    // {
-    //     $diff = time() - $old_time;
+    public function format_time($old_time)
+    {
+        $diff = time() - $old_time;
+      
+    //seconds
+     if ($diff < 60) {
 
-    //     $minutes = round($diff / 60);
-    //     $seconds = round($diff % 60);
+        $time = $diff;
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " second ago";
+        } else {
+            return $roundtime . " seconds ago";
+        }
+    }
 
-    //     $time_array = array(
-    //         'minutes' => $minutes,
-    //         'seconds' => $seconds
-    //     );
+    //minutes
+    else if ($diff > 60 and $diff < 3600) {
+        $time = $diff / 60;
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " minute ago";
+        } else {
+            return $roundtime . " minutes ago";
+        }
+    }
 
-    //     return $time_array;
-    // }
+
+
+    // hours
+    else if ($diff > 3600 and $diff < 86400) {
+        $time = $diff / 3600;
+
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " hour ago";
+        } else {
+            return $roundtime . " hours ago";
+        }
+    }
+
+    // days
+    else if ($diff > 86400 and $diff < 604800) {
+        $time = $diff / 86400;
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " day ago";
+        } else {
+            return $roundtime . " days ago";
+        }
+    }
+
+    // weeks
+    else if ($diff > 604800 and $diff < 2419200) {
+        $time = $diff / 604800;
+
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " week ago";
+        } else {
+            return $roundtime . " weeks ago";
+        }
+    }
+
+    // years
+    else if ($diff > 2419200 and $diff < 29030400) {
+        $time = $diff / 2419200;
+
+        $roundtime = round($time);
+        if ($roundtime == 1) {
+            return $roundtime . " month ago";
+        } else {
+            return $roundtime . " months ago";
+        }
+       }
+      
+    }
 
 
     public function format_contest_time($time)

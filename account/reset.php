@@ -202,3 +202,8 @@ $typing = new TypingContest();
 //$typing->checkResults();
 //$admin->createFreeAirtimeWithdrawal("dskjdnkjsd", "150", "08012781278");
 //$admin->addTransaction("shdgsdkj", "deposit", "Online", "500");
+
+//echo $db->format_time(1601705182);
+//$admin->sendLiveFeedNotification();
+//$admin-> markLiveFeedNotificationsAsSeen("5efa668ebd5c6");
+//echo $admin->getNumUnseenLiveFeedNotifications("5ef9e0bba9cbe");

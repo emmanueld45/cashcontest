@@ -20,7 +20,7 @@ $session_id = $_SESSION['id'];
 <head>
     <title>CashContest | profile</title>
     <meta charset="UTF-8">
-    <meta name="description" content="SolMusic HTML Template">
+    <meta name="description" content="">
     <meta name="keywords" content="music, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -622,7 +622,7 @@ $session_id = $_SESSION['id'];
             console.log("withdrawal balance: " + withdrawable_balance)
             console.log("amount: " + cash_amount)
 
-            if (cash_amount <= withdrawable_balance) {
+            if (parseInt(cash_amount) <= parseInt(withdrawable_balance)) {
                 $(".cash-withdrawal-btn").html("Processing...");
                 $(".loader-container").fadeIn();
                 setTimeout(() => {
@@ -640,7 +640,7 @@ $session_id = $_SESSION['id'];
             var withdrawable_balance = $(".withdrawable-balance").val();
             var airtime_amount = $(".airtime-withdrawal-amount").val();
 
-            if (airtime_amount <= withdrawable_balance) {
+            if (parseInt(airtime_amount) <= parseInt(withdrawable_balance)) {
                 $(".airtime-withdrawal-btn").html("Processing...");
                 $(".loader-container").fadeIn();
                 setTimeout(() => {

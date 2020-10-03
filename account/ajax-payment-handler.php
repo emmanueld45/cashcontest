@@ -26,6 +26,9 @@ if (isset($_POST['process_online_payment'])) {
 
     $fund_user =  $user->updateUserDetail($session_id, "coins", $amount, "+");
     $fund_admin =  $admin->updateAdminDetail("users_balance", $amount, "+");
+    $admin->addTransaction($session_id, "deposit", "Online", $amount);
+    $activity->createAtivity($session_id, "online_payment", "deposited N$amount for topup", "empty");
+    $admin->sendLiveFeedNotification();
 
     if ($fund_user and $fund_admin) {
         $data = array("status" => "success", "amount" => $amount);
@@ -53,6 +56,9 @@ if (isset($_POST['process_coupon_payment'])) {
         $amount = $admin->getCouponCoinPrice($coupon_code);
         $fund_user =  $user->updateUserDetail($session_id, "coins", $amount, "+");
         $fund_admin =  $admin->updateAdminDetail("users_balance", $amount, "+");
+        $admin->addTransaction($session_id, "deposit", "Coupon", $amount);
+        $activity->createAtivity($session_id, "coupon_payment", "deposited N$amount for topup", "empty");
+        $admin->sendLiveFeedNotification();
 
         if ($fund_user and $fund_admin) {
             $admin->markCouponAsUsed($coupon_code);

@@ -1,8 +1,25 @@
+<?php
+session_start();
+include '../classes/database.class.php';
+include '../classes/typing_contest.class.php';
+include '../classes/memory_contest.class.php';
+include '../classes/users.class.php';
+include '../classes/activities.class.php';
+include '../classes/admin.class.php';
+
+
+
+
+if(!isset($_SESSION['id'])){
+ $admin->goTo("../auth/login", "typing_contest");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
 <head>
-    <title>CashContest | profile</title>
+    <title>CashContest | Typing contest</title>
     <meta charset="UTF-8">
     <meta name="description" content="SolMusic HTML Template">
     <meta name="keywords" content="music, html">
@@ -187,6 +204,7 @@
     <script>
         setInterval(() => {
             var typing_contest = "yes";
+            var end_contest = "yes";
             $.ajax({
 
                 url: "ajax-get-contests.php",
@@ -194,6 +212,7 @@
                 async: false,
                 data: {
                     "typing_contest": typing_contest,
+                    "end_contest":end_contest
                 },
                 success: function(data) {
                     $(".contests-container").html(data);

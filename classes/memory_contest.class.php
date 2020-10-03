@@ -11,7 +11,7 @@ class MemoryContest
     public $diamond_coin_price = 200;
 
     public $max_participants = 5;
-    public $min_participants = 1;
+    public $min_participants = 3;
 
 
 
@@ -61,7 +61,7 @@ class MemoryContest
         $time = time();
         $date = date("d-m-y");
         $this->start_time = time();
-        $this->end_time = $this->start_time + 120;
+        $this->end_time = $this->start_time + 600;
 
         $have_results = "no";
         $status = "Running";
@@ -274,6 +274,7 @@ class MemoryContest
         global $db;
         $user = new User();
         $admin = new Admin();
+        $activity = new Activity();
 
         $result = $db->setQuery("SELECT * FROM memory_contest WHERE have_results='no'  AND status='Ended';");
         while ($row = mysqli_fetch_assoc($result)) {
@@ -325,6 +326,9 @@ class MemoryContest
                     $user->updateUserDetail($winner_id, "withdrawable_balance", $winner_price, "+");
                     $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $winner_price);
                     $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $winner_price, "memory_contest");
+                    $activity->createAtivity($winner_id, "memory_contest_win", "won a memory contest", $contest_id);
+                    $admin->sendLiveFeedNotification();
                 } else {
 
                     if ($x + 1 == $num_participants) {
@@ -340,6 +344,9 @@ class MemoryContest
                         $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
                         $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
                         $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                        $activity->addToWinnerHistory($winner_id, $correct_winner_price, "memory_contest");
+                        $activity->createAtivity($winner_id, "memory_contest_win", "won a memory contest", $contest_id);
+                        $admin->sendLiveFeedNotification();
                     }
                 }
             } else {
@@ -349,9 +356,12 @@ class MemoryContest
                 $result2 = $db->setQuery("SELECT * FROM memory_contest_participants WHERE contest_id='$contest_id';");
                 while ($row2 = mysqli_fetch_assoc($result2)) {
                     $winner_id = $row2['userid'];
-                    $user->updateUserDetail($winner_id, "withdrawable_balance", $correct_winner_price, "+");
+                    $user->updateUserDetail($winner_id, "coins", $correct_winner_price, "+");
                     $this->setParticipantDetail($contest_id, $winner_id, "amount_won", $correct_winner_price);
                     $this->setParticipantDetail($contest_id, $winner_id, "won", "yes");
+                    $activity->addToWinnerHistory($winner_id, $correct_winner_price, "memory_contest");
+                    $activity->createAtivity($winner_id, "memory_contest_win", "won a memory contest", $contest_id);
+                    $admin->sendLiveFeedNotification();
                 }
             }
         }
@@ -713,3 +723,6 @@ class MemoryContest
 
     /*** CHALLENGE METHODS END **** */
 }
+
+
+$memory = new MemoryContest();

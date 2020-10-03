@@ -4,6 +4,8 @@ session_start();
 include '../classes/database.class.php';
 include '../classes/users.class.php';
 include '../classes/activities.class.php';
+include '../classes/admin.class.php';
+
 
 
 $user = new User();
@@ -133,13 +135,30 @@ $session_id = $_SESSION['id'];
                 </a>
 
 
-                <div class="body-nav-item" style="color:crimson;"><i class="fa fa-flag"></i> Free airtime: <span>&#8358</span><?php echo $user->getUserDetail($session_id, "airtime_balance"); ?> <a href="winwheel"><button class="btn btn-danger fr" style="padding:5px;font-size:14px;background-color:crimson;">Spin</button></a> <button class="btn btn-primary fr cashout-btn" style="font-size:14px;margin-right:7px;">cashout</button></div>
+                <div class="body-nav-item" style="color:crimson;"><i class="fa fa-flag"></i> Airtime: <span>&#8358</span><?php echo $user->getUserDetail($session_id, "airtime_balance"); ?> <a href="winwheel"><button class="btn btn-danger fr" style="padding:5px;font-size:14px;background-color:crimson;">Spin</button></a> <button class="btn btn-primary fr cashout-btn" style="font-size:14px;margin-right:7px;">cashout</button></div>
 
 
             </div>
             <!-- items container end -->
 
 
+
+            <!-- items container start -->
+            <div class="body-nav-item-container">
+
+                <!-- <a href="topup.php">
+                    <div class="body-nav-item" style="border-top:none;"><i class="fa fa-bell stroke-transparent"></i> Activities <i class="fa fa-angle-right fr"></i></div>
+                </a> -->
+                <a href="../demo/typing/game.php">
+                    <div class="body-nav-item"><i class="fa fa-gamepad"></i> Typing demo <i class="fa fa-angle-right fr"></i></div>
+                </a>
+                <a href="../demo/memory/game.php">
+                    <div class="body-nav-item"><i class="fa fa-gamepad"></i> Memory demo <i class="fa fa-angle-right fr"></i></div>
+                </a>
+                
+
+            </div>
+            <!-- items container end -->
 
             <!-- items container start -->
             <div class="body-nav-item-container">

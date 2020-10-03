@@ -101,12 +101,12 @@ include '../../classes/activities.class.php';
 
                 <div class="results-box active">
                     <div class="left">
-                        <img src="../img/artist.jpg" alt="" class="img">
+                        <img src="../<?php echo $user->getUserDetail($userid, "image"); ?>" alt="" class="img">
                     </div>
                     <div class="middle">
                         <?php echo $firstname . " " . $lastname; ?>
                         <button class="won">won <span>&#8358</span><?php echo $row['amount_won']; ?></button>
-                        <span class="time active"><?php echo $row['finish_time']; ?></span>
+                        <span class="time active"><?php echo $row['finish_time']; ?> seconds</span>
                     </div>
                     <div class="right">
                         <button><img src="../../img/icons/trophy.png" class="icon"></button>
@@ -121,11 +121,11 @@ include '../../classes/activities.class.php';
 
                 <div class="results-box">
                     <div class="left">
-                        <img src="../img/artist.jpg" alt="" class="img">
+                        <img src="../<?php echo $user->getUserDetail($userid, "image"); ?>" alt="" class="img">
                     </div>
                     <div class="middle">
                         <?php echo $firstname . " " . $lastname; ?>
-                        <span class="time"><?php echo $row['finish_time']; ?></span>
+                        <span class="time"><?php echo $row['finish_time']; ?> seconds</span>
                     </div>
                     <div class="right">
 

@@ -268,7 +268,7 @@ $contest_id = $_GET['contest_id'];
                 if ($user->getUserDetail($session_id, "coins") >= $coin_price) {
                     $memory->addParticipant($contest_id, $session_id);
                     $user->updateUserDetail($session_id, "coins", $coin_price, "-");
-                    $activity->createAtivity($session_id, "contest", "memory_contest", $contest_id);
+                    $activity->createAtivity($session_id, "memory_contest", "Just joined a memory contest", $contest_id);
                     if ($memory->getNumParticipants($contest_id) >= $memory->max_participants) {
                         $memory->createContest($memory->getDetail($contest_id, "contest_category"));
                     }

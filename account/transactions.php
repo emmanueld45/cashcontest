@@ -129,7 +129,8 @@ $session_id = $_SESSION['id'];
             .transactions-container table tbody tr td {
                 border-bottom: 1px solid lightgrey;
                 border-right: 1px solid lightgrey;
-                padding: 10px;
+                padding: 5px;
+                font-size:13px;
             }
 
             .colored-row {
@@ -307,7 +308,7 @@ $session_id = $_SESSION['id'];
                             while ($row = mysqli_fetch_assoc($result)) {
                         ?>
                                 <tr class="">
-                                    <td><?php echo $sn; ?></td>
+                                    <td><b><?php echo $sn; ?>.</b></td>
                                     <td><?php echo $row['transaction_type']; ?></td>
                                     <td><?php echo $row['sub_type']; ?></td>
                                     <td><span>&#8358</span><?php echo number_format($row['amount']); ?></td>
@@ -401,9 +402,7 @@ $session_id = $_SESSION['id'];
 
 
 
-    <input type="text" class="firstname" value="<?php echo $user->getUserDetail($session_id, "firstname"); ?>" style="display:none;">
-    <input type="text" class="lastname" value="<?php echo $user->getUserDetail($session_id, "lastname"); ?>" style="display:none;">
-    <input type="text" class="email" value="<?php echo $user->getUserDetail($session_id, "email"); ?>" style="display:none;">
+
 
     <!-- Footer section -->
 

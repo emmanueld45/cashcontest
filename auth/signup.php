@@ -1,8 +1,18 @@
+<?php
+session_start();
+include '../classes/database.class.php';
+include '../classes/users.class.php';
+
+$user = new User();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="zxx">
   <head>
     <title>
-      Invest Register Form Flat Responsive Widget Template :: w3layouts
+      Contest
     </title>
     <!-- Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,26 +61,50 @@
           <h2>Register Your Account</h2>
         </div>
         <div class="content-bottom">
-          <form action="#" method="post">
+          <form action="" method="POST" onsubmit="return validateForm()">
+            <?php
+              if(isset($_GET['phone_exists'])){
+
+                  echo "<div class='alert alert-danger' style='padding:10px;background-color:#ff4f81;color:white;border-radius:3px;font-size:14px;'>
+                
+                  <b>Sorry, Phone number already in use!</b>
+                 
+                  </div>";
+              }
+
+            ?>
             <i class="fab fa-centercode"></i>
             <div class="field_w3ls">
               <div class="field-group">
                 <input
-                  name="text1"
+                  name="firstname"
                   id="text1"
                   type="text"
                   value=""
-                  placeholder="Username"
+                  class="firstname"
+                  placeholder="Firstname"
                   required
                 />
               </div>
               <div class="field-group">
                 <input
-                  name="email"
-                  id="email"
-                  type="email"
+                  name="lastname"
+                  id="text1"
+                  type="text"
                   value=""
-                  placeholder="Email"
+                  class="lastname"
+                  placeholder="Lastname"
+                  required
+                />
+              </div>
+              <div class="field-group">
+                <input
+                  name="phone"
+                  id="phone"
+                  type="tel"
+                  value=""
+                  class="phone"
+                  placeholder="Phone Number"
                   required
                 />
               </div>
@@ -81,6 +115,7 @@
                   class="form-control"
                   name="password"
                   value=""
+                  class="password"
                   placeholder="Password"
                 />
                 <span
@@ -92,12 +127,12 @@
             <div class="wthree-field">
               <input
                 id="saveForm"
-                name="saveForm"
                 type="submit"
                 value="Get Started"
+                name="submit"
               />
             </div>
-            <p class="signin">or sign up with <a href="#">facebook</a></p>
+            <p class="signin">Don't have an account? <a href="login.php">Login here</a></p>
             <p class="terms">
               By signing up, you accept our <a href="#">Terms of use</a> and
               <a href="#">Privicy policy</a>
@@ -109,11 +144,70 @@
     </div>
     <div class="copyright text-center">
       <p>
-        © 2018 CashContest
+        © 2020 CashContest
         <!-- <a href="http://w3layouts.com">W3layouts</a> -->
       </p>
     </div>
     <!--//copyright-->
+
+
+
+
+
+
+
+<?php
+
+
+if(isset($_POST['submit'])){
+
+
+  $firstname = mysqli_real_escape_string($db->conn, $_POST['firstname']);
+  $lastname = mysqli_real_escape_string($db->conn, $_POST['lastname']);
+  $phone = mysqli_real_escape_string($db->conn, $_POST['phone']);
+  $password = mysqli_real_escape_string($db->conn, $_POST['password']);
+
+  $result = $db->setQuery("SELECT * FROM users WHERE phone='$phone';");
+  $numrows = mysqli_num_rows($result);
+
+  if($numrows == 0){
+    $result = $user->createUser($firstname, $lastname, $phone, $password);
+
+    $result1 = $db->setQuery("SELECT * FROM users WHERE phone='$phone';");
+    $row1 = mysqli_fetch_assoc($result1);
+
+    $_SESSION['id'] = $row1['uniqueid'];
+
+    echo '<script>
+    window.location.href="../account";
+    </script>';
+  }else{
+    echo '<script>
+    window.location.href="signup.php?phone_exists";
+    </script>';
+  }
+ 
+}
+
+
+
+
+
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
     <script src="js/jquery-2.2.3.min.js"></script>
     <!-- script for show password -->
     <script>
@@ -126,6 +220,32 @@
           input.attr("type", "password");
         }
       });
+
+
+
+
+
+
+  function validateForm(){
+
+    if($(".phone").val().length != 11){
+      alert("Phone number is invalid");
+      return false;
+    }else{
+      return true;
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
     </script>
     <!-- /script for show password -->
   </body>

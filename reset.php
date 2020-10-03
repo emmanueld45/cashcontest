@@ -16,7 +16,7 @@ if ($result) {
 
 //echo $_SESSION['contest_sentence_count_5efcf620dd870'];
 
-$typing_contest = new Typing_contest();
+//$typing_contest = new Typing_contest();
 /*$result = $typing_contest->createContest("Silver");
 if ($result) {
     echo "Contest created";
@@ -97,3 +97,4 @@ while ($row = mysqli_fetch_assoc($result)) {
     $typing_contest->reduceContestTime($contest_id);
 }
 */
+echo time() + 30;

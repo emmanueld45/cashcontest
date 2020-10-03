@@ -5,11 +5,22 @@
          <span class="header-logo w">Cash<span class="r">contest</span></span>
      </a>
      <div class="header-right">
-         <a href="help.php" class="hr-btn">Help</a>
+         <?php
+         if(isset($_SESSION['id'])){
+        echo "<a href='logout' class='hr-btn'>Logout?</a>";
+         }
+         ?>
          <span>|</span>
          <div class="user-panel">
-             <a href="auth/login.php" class="login">Login</a>
-             <a href="auth/signup.php" class="register">Create an account</a>
+             <?php
+             if(!isset($_SESSION['id'])){
+            echo "<a href='auth/login' class='login'>Login</a>
+             <a href='auth/signup' class='register'>Create an account</a>
+             ";
+             }else{
+                echo "<a href='account' class='register'>My account</a>";
+             }
+             ?>
          </div>
      </div>
      <ul class="main-menu">
@@ -25,7 +36,7 @@
              </ul>
          </li> -->
          <li><a href="faq.php">FAQ</a></li>
-         <li><a href="contact.html">Contact</a></li>
+         <!-- <li><a href="contact.html">Contact</a></li> -->
      </ul>
  </header>
  <!-- Header section end -->
